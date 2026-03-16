@@ -1,7 +1,7 @@
 function Header() {
   return (
-    <header className="flex items-center justify-center">
-      <h1>The Bank App</h1>
+    <header className="flex items-center p-6">
+      <h1>The Bank</h1>
     </header>
   );
 }
