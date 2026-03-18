@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 interface Rate {
   rate: number;
   source: string;
-  target: string;
+  target: string | null;
 }
 
 function useExchangeRate(sourceCurrency: string, targetCurrency: string) {

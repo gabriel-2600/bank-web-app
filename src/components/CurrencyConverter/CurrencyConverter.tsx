@@ -3,14 +3,15 @@ import SelectCurrency from "./SelectCurrency";
 import useExchangeRate from "./use-exchange-rate";
 
 function CurrencyConverter() {
-  const [sourceCurrency, setSourceCurrency] = useState("USD");
-  const [targetCurrency, setTargetCurrency] = useState("PHP");
+  const [sourceCurrency, setSourceCurrency] = useState<string>("USD");
+  const [targetCurrency, setTargetCurrency] = useState<string>("PHP");
   const { resultData, loading, error } = useExchangeRate(
     sourceCurrency,
     targetCurrency,
   );
-
   const [amount, setAmount] = useState("1");
+  const numericAmount = Number(amount) || 0;
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
   };
@@ -51,7 +52,7 @@ function CurrencyConverter() {
       </div>
 
       <div className="flex">
-        <h2>{resultData.rate * Number(amount)}</h2>
+        <h2>{resultData.rate * numericAmount}</h2>
         <p>{resultData.source}</p>
       </div>
     </div>
