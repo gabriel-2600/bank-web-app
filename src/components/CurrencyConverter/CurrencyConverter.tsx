@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SelectCurrency from "./SelectCurrency";
 import useExchangeRate from "./use-exchange-rate";
+import CurrencyConverterException from "./CurrencyConverterExeption";
 
 function CurrencyConverter() {
   const [sourceCurrency, setSourceCurrency] = useState<string>("USD");
@@ -24,16 +25,8 @@ function CurrencyConverter() {
     );
   }
 
-  if (error) {
-    return (
-      <div>
-        <p className="text-sm text-red-500">{error}</p>
-      </div>
-    );
-  }
-
   if (!resultData) {
-    return <p>No rate data available.</p>;
+    <p>No Rate Data Available</p>;
   }
 
   return (
@@ -46,21 +39,27 @@ function CurrencyConverter() {
           onChange={handleInput}
         />
         <SelectCurrency
-          currency={targetCurrency}
-          setCurrency={setTargetCurrency}
+          currency={sourceCurrency}
+          setCurrency={setSourceCurrency}
         />
         <p className="text-sm font-medium text-slate-500">to</p>
         <SelectCurrency
-          currency={sourceCurrency}
-          setCurrency={setSourceCurrency}
+          currency={targetCurrency}
+          setCurrency={setTargetCurrency}
         />
       </div>
 
       <div className="flex items-center gap-2">
-        <h2 className="text-3xl font-semibold text-slate-900">
-          {resultData.rate * numericAmount}
-        </h2>
-        <p className="text-sm text-slate-500">{resultData.source}</p>
+        {error ? (
+          <CurrencyConverterException error={error} />
+        ) : (
+          <>
+            <h2 className="text-3xl font-semibold text-slate-900">
+              {resultData.rate * numericAmount}
+            </h2>
+            <p className="text-sm text-slate-500">{resultData.target}</p>
+          </>
+        )}
       </div>
     </div>
   );

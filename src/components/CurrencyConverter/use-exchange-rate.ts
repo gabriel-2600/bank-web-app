@@ -16,6 +16,9 @@ function useExchangeRate(sourceCurrency: string, targetCurrency: string) {
     async function fetchData() {
       const apiKey = import.meta.env.VITE_API_KEY;
 
+      setLoading(true);
+      setError(null);
+
       try {
         const response = await fetch(
           `https://api.wise.com/v1/rates?source=${sourceCurrency}&target=${targetCurrency}`,

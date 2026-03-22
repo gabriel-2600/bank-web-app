@@ -1,4 +1,4 @@
-import CURRENCY_LIST from "./currency";
+import CURRENCY_LIST from "./currency-list";
 
 interface SelectCurrencyProps {
   currency: string;
