@@ -7,6 +7,7 @@ interface Rate {
 }
 
 function useExchangeRate(sourceCurrency: string, targetCurrency: string) {
+  const apiKey = import.meta.env.VITE_API_KEY;
   const [data, setData] = useState<Rate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -14,8 +15,6 @@ function useExchangeRate(sourceCurrency: string, targetCurrency: string) {
 
   useEffect(() => {
     async function fetchData() {
-      const apiKey = import.meta.env.VITE_API_KEY;
-
       setLoading(true);
       setError(null);
 
@@ -32,14 +31,14 @@ function useExchangeRate(sourceCurrency: string, targetCurrency: string) {
         );
 
         if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
+          console.log(response.status);
         }
 
         const result: Rate[] = await response.json();
         setData(result);
       } catch (err) {
         if (err instanceof Error) {
-          setError(err.message);
+          setError("Failed to retrieve Data");
         }
       } finally {
         setLoading(false);
