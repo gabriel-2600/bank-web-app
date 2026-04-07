@@ -1,8 +1,11 @@
+import DisplayAccount from "../components/HomePage/DisplayAccount";
+
 function HomePage() {
   return (
-    <section>
+    <main>
       <p>Choose accounts</p>
-    </section>
+      <DisplayAccount />
+    </main>
   );
 }
 

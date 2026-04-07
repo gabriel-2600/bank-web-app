@@ -1,4 +1,10 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useOutletContext } from "react-router";
+import type { AccountInterface } from "../../types/AccountInterface";
+
+type AccountContextType = {
+  setAccount: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
+};
 
 interface AccountFormInterface {
   accountName: string;
@@ -6,9 +12,14 @@ interface AccountFormInterface {
 }
 
 function CreateAccountForm() {
-  const { register, handleSubmit } = useForm<AccountFormInterface>();
-  const onSubmit: SubmitHandler<AccountFormInterface> = (data) =>
+  const { setAccount } = useOutletContext<AccountContextType>();
+  const { register, handleSubmit, reset } = useForm<AccountFormInterface>();
+
+  const onSubmit: SubmitHandler<AccountFormInterface> = (data) => {
     console.log(data);
+    setAccount((prevAccounts) => [...prevAccounts, data]);
+    reset();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
