@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router";
 import type { AccountInterface } from "../../types/AccountInterface";
 
 type AccountContextType = {
-  setAccount: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
+  setAccounts: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
 };
 
 interface AccountFormInterface {
@@ -13,14 +13,14 @@ interface AccountFormInterface {
 }
 
 function CreateAccountForm() {
-  const { setAccount } = useOutletContext<AccountContextType>();
+  const { setAccounts } = useOutletContext<AccountContextType>();
   const { register, handleSubmit, reset } = useForm<AccountFormInterface>();
 
   const onSubmit: SubmitHandler<AccountFormInterface> = (data) => {
     const accountID = crypto.randomUUID();
     data.accountID = accountID;
-    console.log(data);
-    setAccount((prevAccounts) => [...prevAccounts, data]);
+
+    setAccounts((prevAccounts) => [...prevAccounts, data]);
     reset();
   };
 
