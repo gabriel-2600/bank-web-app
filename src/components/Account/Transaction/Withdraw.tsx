@@ -24,7 +24,7 @@ function Withdraw({ accountId, account, setAccounts }: WithdrawProps) {
     setAccounts((prevAccounts) =>
       prevAccounts.map((account) =>
         account.accountID === accountId
-          ? { ...account, balance: account.balance - Number(amount) }
+          ? { ...account, balance: account.balance - amount }
           : account,
       ),
     );

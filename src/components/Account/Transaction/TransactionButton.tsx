@@ -46,7 +46,6 @@ function TransactionButton({
       </div>
 
       <div>
-        {isTransferClicked && <Transfer />}
         {isDepositClicked && (
           <Deposit accountId={accountId} setAccounts={setAccounts} />
         )}
@@ -54,6 +53,14 @@ function TransactionButton({
           <Withdraw
             accountId={accountId}
             account={account}
+            setAccounts={setAccounts}
+          />
+        )}
+        {isTransferClicked && (
+          <Transfer
+            accountId={accountId}
+            account={account}
+            accounts={accounts}
             setAccounts={setAccounts}
           />
         )}
