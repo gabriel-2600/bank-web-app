@@ -43,6 +43,7 @@ function Transfer({
     }
 
     if (accountId === recipientAccount.accountID) {
+      reset();
       return;
     }
 
