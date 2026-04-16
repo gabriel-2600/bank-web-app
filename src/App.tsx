@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router";
 
 import NavBar from "./components/NavBar";
@@ -8,12 +9,11 @@ import type { AccountInterface } from "./types/AccountInterface";
 function App() {
   const [accounts, setAccounts] = useState<AccountInterface[]>([]);
 
-  console.log(accounts);
   return (
     <>
       <NavBar />
       <Outlet context={{ accounts, setAccounts }} />
-      {/* <Footer /> */}
+      <Toaster />
     </>
   );
 }

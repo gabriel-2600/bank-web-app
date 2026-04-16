@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 import type { AccountInterface } from "../../../types/AccountInterface";
+import { successfulToast } from "../../../util/toast-notifcation";
 
 type WithdrawProps = {
   accountId: string;
@@ -30,7 +31,9 @@ function Withdraw({ accountId, account, setAccounts }: WithdrawProps) {
           : account,
       ),
     );
+
     reset();
+    successfulToast("Withdraw Successful");
   };
 
   return (

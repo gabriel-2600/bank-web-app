@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 import type { AccountInterface } from "../../../types/AccountInterface";
+import { errorToast, successfulToast } from "../../../util/toast-notifcation";
 
 type TransferProps = {
   accountId: string;
@@ -33,16 +34,11 @@ function Transfer({
     toAccountID,
     amount,
   }) => {
-    if (account.balance < amount) {
-      console.log("not enough");
-      return;
-    }
-
     const recipientAccount = accounts.find(
       (acc) => acc.accountID === toAccountID,
     );
     if (!recipientAccount?.accountID) {
-      console.log("Account ID not found");
+      errorToast("Account Not Found");
       return;
     }
 
@@ -64,6 +60,7 @@ function Transfer({
     );
 
     reset();
+    successfulToast("Transfer Successful");
   };
 
   return (

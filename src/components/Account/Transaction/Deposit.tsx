@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 import type { AccountInterface } from "../../../types/AccountInterface";
+import { successfulToast } from "../../../util/toast-notifcation";
 
 type DepositProps = {
   accountId: string;
@@ -25,7 +26,9 @@ function Deposit({ accountId, setAccounts }: DepositProps) {
           : account,
       ),
     );
+
     reset();
+    successfulToast("Deposit Successful");
   };
 
   return (
