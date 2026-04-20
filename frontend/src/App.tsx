@@ -4,7 +4,6 @@ import { Outlet } from "react-router";
 
 import NavBar from "./components/NavBar";
 import type { AccountInterface } from "./types/AccountInterface";
-// import Footer from "./components/Footer";
 
 function App() {
   const [accounts, setAccounts] = useState<AccountInterface[]>([]);
