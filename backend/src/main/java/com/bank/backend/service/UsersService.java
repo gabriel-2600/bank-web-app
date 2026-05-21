@@ -14,18 +14,6 @@ public class UsersService {
     }
 
     public Users createUser(Users user){
-        if(user.getFullName().isBlank() || user.getUsername().isBlank() || user.getPassword().isBlank()){
-            return null;
-        }
-
-        if(user.getUsername().length() < 8 || user.getUsername().length() > 12){
-            return null;
-        }
-
-        if(user.getPassword().length() < 8){
-            return null;
-        }
-
         return usersRepository.save(user);
     }
 

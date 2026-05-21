@@ -96,13 +96,9 @@ function RegistrationForm() {
                 value: 4,
                 message: "Minimum 4 characters required",
               },
-              maxLength: {
-                value: 12,
-                message: "Maximum 12 characters required",
-              },
             })}
             className="w-full rounded-xl border border-black/15 bg-white px-3.5 py-2.5 text-sm text-black outline-none transition-colors placeholder:text-black/40 focus:border-[#8494FF]"
-            placeholder="4 to 12 characters"
+            placeholder="Minimum 4 characters"
           />
           {errors.username && (
             <p className="text-xs font-medium text-red-500">
