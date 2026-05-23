@@ -42,14 +42,17 @@ function RegistrationForm() {
       password: data.password,
     };
 
-    const result = await performRegistration(registrationData);
+    try {
+      const result = await performRegistration(registrationData);
 
-    if (result) {
-      successfulToast("Registered Successfully!");
-      console.log(result);
-      reset();
-    } else {
-      errorToast("Registration Failed");
+      if (result) {
+        successfulToast("Registered Successfully!");
+        reset();
+      } else {
+        errorToast("Registration Failed");
+      }
+    } catch (err) {
+      errorToast(err instanceof Error ? err.message : "Something went wrong");
     }
   };
 
