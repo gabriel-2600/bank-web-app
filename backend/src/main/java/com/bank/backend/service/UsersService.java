@@ -13,8 +13,8 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
-    public Users createUser(Users user){
-        return usersRepository.save(user);
+    public void createUser(Users user){
+        usersRepository.save(user);
     }
 
     public Users getUserById(Long userID){

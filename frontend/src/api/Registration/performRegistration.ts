@@ -18,11 +18,9 @@ export const performRegistration = async (
     body: JSON.stringify(registrationData),
   });
 
-  const data = await response.json();
-
   if (!response.ok) {
-    throw new Error(data.message || "Registration failed");
+    throw new Error("Server Error");
   }
 
-  return data;
+  return true;
 };

@@ -3,6 +3,8 @@ package com.bank.backend.controller;
 import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.InvalidInputException;
 import com.bank.backend.service.UsersService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +17,7 @@ public class UsersController {
     }
 
     @PostMapping("/auth/register")
-    public Users registerUser(@RequestBody Users user){
+    public ResponseEntity<?> registerUser(@RequestBody Users user){
         if(user.getFullName().isBlank() || user.getUsername().isBlank() || user.getPassword().isBlank()){
             throw new InvalidInputException("Input can not be empty");
         }
@@ -28,7 +30,9 @@ public class UsersController {
             throw new InvalidInputException("Character length should be more than 7");
         }
 
-        return usersService.createUser(user);
+        usersService.createUser(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}")
