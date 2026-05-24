@@ -42,13 +42,17 @@ function RegistrationForm() {
       password: data.password,
     };
 
-    const result = await performRegistration(registrationData);
+    try {
+      await performRegistration(registrationData);
 
-    if (result) {
       successfulToast("Registered Successfully!");
       reset();
-    } else {
-      errorToast("Registration Failed, Please Try Again!");
+    } catch (error) {
+      errorToast(
+        error instanceof Error
+          ? error.message
+          : "Registration failed, please try again later",
+      );
     }
   };
 
