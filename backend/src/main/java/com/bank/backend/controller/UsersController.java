@@ -1,5 +1,7 @@
 package com.bank.backend.controller;
 
+import com.bank.backend.dto.request.LoginRequest;
+import com.bank.backend.dto.response.LoginResponse;
 import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.InvalidInputException;
 import com.bank.backend.service.UsersService;
@@ -33,6 +35,13 @@ public class UsersController {
         usersService.createUser(user);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/auth/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest request){
+       LoginResponse loginResponse = usersService.verifyCredentials(request.username(), request.password());
+
+       return  new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}")
