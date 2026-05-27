@@ -49,9 +49,7 @@ function RegistrationForm() {
       reset();
     } catch (error) {
       errorToast(
-        error instanceof Error
-          ? error.message
-          : "Registration failed, please try again later",
+        error instanceof Error ? error.message : "Registration Failed",
       );
     }
   };

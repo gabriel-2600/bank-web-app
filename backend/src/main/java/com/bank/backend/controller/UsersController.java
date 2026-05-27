@@ -37,7 +37,7 @@ public class UsersController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/auth/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest request){
        LoginResponse loginResponse = usersService.verifyCredentials(request.username(), request.password());
 

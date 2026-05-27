@@ -1,4 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { errorToast, successfulToast } from "../../../util/toast-notifcation";
+import { performLogin } from "../../../api/Login/performLogin";
 
 interface LoginFormInterface {
   username: string;
@@ -12,8 +14,24 @@ function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormInterface>();
 
-  const onSubmit: SubmitHandler<LoginFormInterface> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<LoginFormInterface> = async (data) => {
+    if (!data.username || !data.password) {
+      errorToast("Fields cannot be empty!");
+      return;
+    }
+
+    const loginData = {
+      username: data.username,
+      password: data.password,
+    };
+
+    try {
+      await performLogin(loginData);
+
+      successfulToast("Successful Login");
+    } catch (error) {
+      errorToast(error instanceof Error ? error.message : "Login Failed");
+    }
   };
 
   return (
@@ -29,14 +47,14 @@ function LoginForm() {
           >
             Username
           </label>
-        <input
-          id="user-name"
-          {...register("username", {
-            required: "Username is required",
-          })}
-          className="w-full rounded-xl border border-black/15 bg-white px-3.5 py-2.5 text-sm text-black outline-none transition-colors placeholder:text-black/40 focus:border-[#8494FF]"
-          placeholder="Enter your username"
-        />
+          <input
+            id="user-name"
+            {...register("username", {
+              required: "Username is required",
+            })}
+            className="w-full rounded-xl border border-black/15 bg-white px-3.5 py-2.5 text-sm text-black outline-none transition-colors placeholder:text-black/40 focus:border-[#8494FF]"
+            placeholder="Enter your username"
+          />
           {errors.username && (
             <p className="text-xs font-medium text-red-500">
               {errors.username.message}
