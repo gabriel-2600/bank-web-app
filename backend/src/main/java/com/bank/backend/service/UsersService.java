@@ -33,7 +33,7 @@ public class UsersService {
             throw new BadCredentialsException("Invalid Credentials");
         }
 
-        return new LoginResponse("Login successful", true);
+        return new LoginResponse("Login Successful", true);
     }
 
     public Users getUserById(Long userID){
