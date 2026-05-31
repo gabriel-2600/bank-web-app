@@ -4,7 +4,6 @@ import com.bank.backend.dto.request.LoginRequest;
 import com.bank.backend.dto.request.RegisterRequest;
 import com.bank.backend.dto.response.LoginResponse;
 import com.bank.backend.dto.response.RegisterResponse;
-import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.InvalidInputException;
 import com.bank.backend.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,7 @@ public class AuthController {
             throw new InvalidInputException("Invalid Input");
         }
 
-        RegisterResponse registerResponse = authService.createUser(registerRequest);
+        RegisterResponse registerResponse = authService.createUser(registerRequest.fullName(), registerRequest.username(), registerRequest.password());
 
         return new ResponseEntity<>(registerResponse, HttpStatus.OK);
     }
