@@ -2,6 +2,7 @@ package com.bank.backend.entity;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "users")
 public class Users {
@@ -9,7 +10,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userID;
+    private Long userId;
 
     @Column(name = "full_name")
     private String fullName;
@@ -18,35 +19,35 @@ public class Users {
 
     private String password;
 
-    public Long getUserID() {
-        return userID;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public String getFullName() {
-        return fullName;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getPassword(){
+        return password;
     }
 }

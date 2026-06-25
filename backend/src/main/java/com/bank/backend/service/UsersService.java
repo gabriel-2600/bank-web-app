@@ -14,7 +14,6 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
-
     public Users getUserById(Long userID){
         return usersRepository.findById(userID).orElseThrow();
     }

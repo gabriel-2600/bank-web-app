@@ -1,43 +1,60 @@
 package com.bank.backend.service;
 
+import com.bank.backend.dto.request.LoginRequest;
 import com.bank.backend.dto.request.RegisterRequest;
 import com.bank.backend.dto.response.LoginResponse;
 import com.bank.backend.dto.response.RegisterResponse;
 import com.bank.backend.entity.Users;
+import com.bank.backend.exceptions.AlreadyExistsException;
 import com.bank.backend.repository.UsersRepoInterface;
-import org.springframework.security.authentication.BadCredentialsException;
+import com.bank.backend.security.CustomUserDetails;
+import com.bank.backend.security.JwtUtil;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class AuthService {
     private final UsersRepoInterface usersRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public AuthService(UsersRepoInterface usersRepository, PasswordEncoder passwordEncoder){
+    public AuthService(UsersRepoInterface usersRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtil jwtUtil){
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
-    public RegisterResponse createUser(String fullName, String username, String password){
-        Users user = new Users();
-        user.setFullName(fullName);
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        usersRepository.save(user);
-
-        return new RegisterResponse("User Created");
-    }
-
-    public LoginResponse verifyCredentials(String username, String password){
-        Users user = usersRepository.findByUsername(username).orElseThrow(() -> new BadCredentialsException("Invalid Credentials"));
-
-        boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
-        if(!passwordMatch){
-            throw new BadCredentialsException("Invalid Credentials");
+    public RegisterResponse createUser(RegisterRequest registerRequest){
+        if(usersRepository.existsByUsername(registerRequest.username())){
+            throw new AlreadyExistsException("Username already exists");
         }
 
-        return new LoginResponse("Login Successful", true);
+        Users user = new Users();
+        user.setFullName(registerRequest.fullName());
+        user.setUsername(registerRequest.username());
+        user.setPassword(passwordEncoder.encode(registerRequest.password()));
+        usersRepository.save(user);
+
+        return new RegisterResponse("User Created", true);
     }
 
+    public LoginResponse authenticateUser(LoginRequest loginRequest){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.username(),
+                        loginRequest.password()
+                )
+        );
+
+        final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String token = jwtUtil.generateToken(userDetails.getUsername());
+
+        return new LoginResponse(token, userDetails.getUserId(), userDetails.getUsername());
+    }
 }

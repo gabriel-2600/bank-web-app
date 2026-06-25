@@ -18,12 +18,21 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> handleBadCredentialException(BadCredentialsException ex){
-        LoginResponse loginResponse = new LoginResponse(ex.getMessage(), false);
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<?> handleAlreadyExistsException(AlreadyExistsException ex){
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), ex.getMessage());
 
-        return new ResponseEntity<>(loginResponse, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<String> handleBadCredentials(
+            BadCredentialsException ex) {
 
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Invalid credentials");
+    }
 }
+
+

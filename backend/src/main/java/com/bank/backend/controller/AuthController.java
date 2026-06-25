@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class AuthController {
     public final AuthService authService;
 
@@ -22,7 +22,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
         if(registerRequest.fullName().isBlank() || registerRequest.username().isBlank() || registerRequest.password().isBlank()){
             throw new InvalidInputException("Invalid Input");
@@ -36,14 +36,14 @@ public class AuthController {
             throw new InvalidInputException("Invalid Input");
         }
 
-        RegisterResponse registerResponse = authService.createUser(registerRequest.fullName(), registerRequest.username(), registerRequest.password());
+        RegisterResponse registerResponse = authService.createUser(registerRequest);
 
         return new ResponseEntity<>(registerResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/auth/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest request){
-        LoginResponse loginResponse = authService.verifyCredentials(request.username(), request.password());
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
+        LoginResponse loginResponse = authService.authenticateUser(loginRequest);
 
         return  new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
