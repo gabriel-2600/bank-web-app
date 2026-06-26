@@ -53,8 +53,8 @@ public class AuthService {
         );
 
         final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(userDetails.getUsername());
+        String accessToken = jwtUtil.generateToken(userDetails.getUsername());
 
-        return new LoginResponse(token, userDetails.getUserId(), userDetails.getUsername());
+        return new LoginResponse(accessToken, userDetails.getUserId(), userDetails.getUsername());
     }
 }
