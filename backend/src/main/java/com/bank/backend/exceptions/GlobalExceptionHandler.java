@@ -26,12 +26,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<String> handleBadCredentials(
+    public ResponseEntity<?> handleBadCredentials(
             BadCredentialsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), "Invalid Credentials");
 
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body("Invalid credentials");
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 }
 

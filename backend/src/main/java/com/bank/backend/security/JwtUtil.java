@@ -16,7 +16,7 @@ public class JwtUtil {
     private String jwtSecret;
 
     @Value("${jwt.expiration}")
-    private int jwtExpiration;
+    private long jwtExpirationMs;
 
     private SecretKey key;
 
@@ -29,7 +29,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + jwtExpiration))
+                .expiration(new Date(new Date().getTime() + jwtExpirationMs))
                 .signWith(key)
                 .compact();
     }
