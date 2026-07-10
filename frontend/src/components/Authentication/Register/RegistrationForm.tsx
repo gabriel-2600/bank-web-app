@@ -3,7 +3,7 @@ import {
   successfulToast,
   errorToast,
 } from "../../../util/toast-notifcation.ts";
-import { performRegistration } from "../../../api/Registration/performRegistration.ts";
+import { performRegistration } from "../../../api/auth/performRegistration.ts";
 
 interface RegistrationFormInterface {
   fullName: string;

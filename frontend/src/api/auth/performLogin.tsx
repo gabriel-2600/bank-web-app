@@ -5,6 +5,12 @@ interface LoginInterface {
   password: string;
 }
 
+interface LoginResponse {
+  accessToken: string;
+  userId: number;
+  username: string;
+}
+
 export const performLogin = async (loginData: LoginInterface) => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -21,7 +27,7 @@ export const performLogin = async (loginData: LoginInterface) => {
     await errorHandler(response);
   }
 
-  const data = await response.json();
+  const data: LoginResponse = await response.json();
   console.log(data);
 
   return data;

@@ -1,6 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { errorToast, successfulToast } from "../../../util/toast-notifcation";
-import { performLogin } from "../../../api/Login/performLogin";
+import { performLogin } from "../../../api/auth/performLogin";
 
 interface LoginFormInterface {
   username: string;
