@@ -1,14 +1,9 @@
 import { errorHandler } from "../../util/error-handler";
+import { type LoginResponse } from "../../auth/authTypes";
 
 interface LoginInterface {
   username: string;
   password: string;
-}
-
-interface LoginResponse {
-  accessToken: string;
-  userId: number;
-  username: string;
 }
 
 export const performLogin = async (loginData: LoginInterface) => {
