@@ -4,12 +4,15 @@ import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./global.css";
 import routes from "./routes.tsx";
+import AuthProvider from "./auth/AuthProvider.tsx";
 
 const router = createBrowserRouter(routes);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
-    <Toaster />
+    <AuthProvider>
+      <RouterProvider router={router} />
+      <Toaster />
+    </AuthProvider>
   </StrictMode>,
 );

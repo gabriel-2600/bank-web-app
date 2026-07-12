@@ -18,11 +18,14 @@ function AuthProvider({ children }: AuthProviderInterface) {
 
     saveToken(ACCESS_TOKEN);
     setAccessToken(ACCESS_TOKEN);
+    console.log("ACCESS TOKEN SAVED✅");
   };
 
   const logout = () => {
     clearToken();
     setAccessToken(null);
+
+    console.log("ACCESS TOKEN CLEARED✅");
   };
 
   return (

@@ -11,6 +11,7 @@ export const getAccessToken = () => {
     return null;
   }
 
+  console.log("PRESENT");
   return accessToken;
 };
 
