@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { errorToast, successfulToast } from "../../../util/toast-notifcation";
-import { performLogin } from "../../../api/auth/performLogin";
+import { performLogin } from "../../../auth/api/performLogin";
 import useAuth from "../../../auth/useAuth";
 
 interface LoginFormInterface {
@@ -12,9 +13,11 @@ function LoginForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginFormInterface>();
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<LoginFormInterface> = async (data) => {
     if (!data.username || !data.password) {
@@ -29,9 +32,11 @@ function LoginForm() {
 
     try {
       const loginResponse = await performLogin(loginData);
-      login(loginResponse);
-
+      reset();
       successfulToast("Successful Login");
+
+      login(loginResponse);
+      navigate("/app", { replace: true });
     } catch (error) {
       errorToast(error instanceof Error ? error.message : "Login Failed");
     }

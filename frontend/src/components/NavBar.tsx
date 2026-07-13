@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import Logout from "./Authentication/Logout";
 
 function NavBar() {
   return (
@@ -31,6 +32,10 @@ function NavBar() {
             >
               Create Bank Account
             </Link>
+          </li>
+
+          <li>
+            <Logout />
           </li>
         </ul>
       </nav>

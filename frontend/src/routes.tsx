@@ -8,6 +8,8 @@ import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
 import LandingErrorPage from "./pages/ErrorPages/LandingErrorPage";
 import AccountPageError from "./pages/ErrorPages/AccountPageError";
+import { protectedLoader } from "./auth/protectedLoader";
+import { publicLoader } from "./auth/publicLoader";
 
 const routes = [
   {
@@ -18,6 +20,7 @@ const routes = [
   {
     path: "login",
     element: <LoginPage />,
+    loader: publicLoader,
   },
   {
     path: "register",
@@ -27,6 +30,7 @@ const routes = [
     path: "app",
     element: <App />,
     errorElement: <ErrorPage />,
+    loader: protectedLoader,
     children: [
       {
         index: true,

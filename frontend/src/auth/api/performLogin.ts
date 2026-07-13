@@ -1,5 +1,5 @@
 import { errorHandler } from "../../util/error-handler";
-import { type LoginResponse } from "../../auth/authTypes";
+import { type LoginResponse } from "../authTypes";
 
 interface LoginInterface {
   username: string;
