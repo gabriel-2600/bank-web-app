@@ -7,7 +7,7 @@ function Logout() {
 
   const performLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
   return (
     <button
