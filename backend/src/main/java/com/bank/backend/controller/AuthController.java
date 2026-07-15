@@ -10,7 +10,6 @@ import com.bank.backend.exceptions.InvalidInputException;
 import com.bank.backend.service.AuthService;
 import com.bank.backend.service.RefreshTokenService;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
