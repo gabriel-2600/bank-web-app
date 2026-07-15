@@ -1,6 +1,5 @@
 package com.bank.backend.exceptions;
 
-import com.bank.backend.dto.response.LoginResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,6 +30,20 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), "Invalid Credentials");
 
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TokenInvalidException.class)
+    public ResponseEntity<?> handleTokenNotFoundException(TokenInvalidException ex){
+        var errorResponse = new ErrorResponse(LocalDateTime.now(), ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex){
+        var errorResponse = new ErrorResponse(LocalDateTime.now(), ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
 

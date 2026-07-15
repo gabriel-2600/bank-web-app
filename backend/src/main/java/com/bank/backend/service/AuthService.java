@@ -22,12 +22,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenService refreshTokenService;
 
-    public AuthService(UsersRepoInterface usersRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtil jwtUtil){
+    public AuthService(UsersRepoInterface usersRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshTokenService refreshTokenService){
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public RegisterResponse createUser(RegisterRequest registerRequest){
@@ -53,8 +55,13 @@ public class AuthService {
         );
 
         final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        String accessToken = jwtUtil.generateToken(userDetails.getUsername());
+        String accessToken = generateAccessToken(userDetails.getUsername());
+        String refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
 
-        return new LoginResponse(accessToken, userDetails.getUserId(), userDetails.getUsername());
+        return new LoginResponse(accessToken, refreshToken, userDetails.getUserId(), userDetails.getUsername());
+    }
+
+    public String generateAccessToken(String username){
+        return jwtUtil.generateToken(username);
     }
 }
