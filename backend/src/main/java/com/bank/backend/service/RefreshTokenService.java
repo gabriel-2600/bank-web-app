@@ -1,6 +1,4 @@
 package com.bank.backend.service;
-
-import com.bank.backend.dto.request.RefreshTokenRequest;
 import com.bank.backend.entity.RefreshToken;
 import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.TokenInvalidException;
@@ -44,29 +42,28 @@ public class RefreshTokenService  {
         return refreshToken.getToken();
     }
 
-    public RefreshToken findToken(RefreshTokenRequest refreshTokenRequest){
-        return refreshTokenRepoInterface.findByToken(refreshTokenRequest.refreshToken()).orElseThrow((() -> new TokenInvalidException("Unauthorized")));
+    public RefreshToken findToken(String refreshToken){
+        return refreshTokenRepoInterface.findByToken(refreshToken).orElseThrow((() -> new TokenInvalidException("Unauthorized")));
     }
 
     public Optional<RefreshToken> findTokenByUserId(Long userId){
         return refreshTokenRepoInterface.findByUserId(userId);
     }
 
-    public boolean isTokenValid(RefreshToken refreshToken){
+    public boolean validateToken(RefreshToken refreshToken){
         var refreshTokenExpiryDate = refreshToken.getExpiryDate();
         var currentDate = LocalDateTime.now();
         boolean isExpired = currentDate.isAfter(refreshTokenExpiryDate);
 
         if(isExpired){
             deleteToken(refreshToken);
-            return false;
+            throw new TokenInvalidException("Unauthorized");
         }
 
         return true;
     }
 
-    public Users findAssociatedUser(RefreshTokenRequest refreshTokenRequest){
-        var refreshToken = findToken(refreshTokenRequest);
+    public Users findAssociatedUser(RefreshToken refreshToken){
         return usersRepoInterface.findById(refreshToken.getUserId()).orElseThrow(() -> new UserNotFoundException("User Not Found"));
     }
 

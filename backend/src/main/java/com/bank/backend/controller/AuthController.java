@@ -1,21 +1,17 @@
 package com.bank.backend.controller;
 
 import com.bank.backend.dto.request.LoginRequest;
-import com.bank.backend.dto.request.RefreshTokenRequest;
 import com.bank.backend.dto.request.RegisterRequest;
 import com.bank.backend.dto.response.LoginResponse;
+import com.bank.backend.dto.response.RefreshTokenResponse;
 import com.bank.backend.dto.response.RegisterResponse;
 import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.InvalidInputException;
-import com.bank.backend.exceptions.TokenInvalidException;
 import com.bank.backend.service.AuthService;
 import com.bank.backend.service.RefreshTokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -55,16 +51,14 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest){
-        var refreshToken = refreshTokenService.findToken(refreshTokenRequest);
-        boolean isValid = refreshTokenService.isTokenValid(refreshToken);
-        if(isValid){
-            Users user = refreshTokenService.findAssociatedUser(refreshTokenRequest);
-            String accessToken = authService.generateAccessToken(user.getUsername());
+    public ResponseEntity<?> refreshToken(@CookieValue("refreshToken") String oldRefreshToken){
+        var refreshToken = refreshTokenService.findToken(oldRefreshToken);
+        refreshTokenService.validateToken(refreshToken);
 
-            return new ResponseEntity<>(accessToken, HttpStatus.OK);
-        }
+        Users user = refreshTokenService.findAssociatedUser(refreshToken);
+        String accessToken = authService.generateAccessToken(user.getUsername());
+        RefreshTokenResponse refreshTokenResponse = new RefreshTokenResponse(accessToken);
 
-        throw new TokenInvalidException("Unauthorized");
+        return new ResponseEntity<>(refreshTokenResponse, HttpStatus.OK);
     }
 }
