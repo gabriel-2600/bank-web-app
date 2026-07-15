@@ -56,9 +56,8 @@ public class AuthService {
 
         final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String accessToken = generateAccessToken(userDetails.getUsername());
-        String refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
 
-        return new LoginResponse(accessToken, refreshToken, userDetails.getUserId(), userDetails.getUsername());
+        return new LoginResponse(accessToken, userDetails.getUserId(), userDetails.getUsername());
     }
 
     public String generateAccessToken(String username){

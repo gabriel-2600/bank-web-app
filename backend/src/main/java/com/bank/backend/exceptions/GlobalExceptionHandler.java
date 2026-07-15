@@ -14,14 +14,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleInvalidInputException(InvalidInputException ex){
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), ex.getMessage());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<?> handleAlreadyExistsException(AlreadyExistsException ex){
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), ex.getMessage());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -29,21 +29,21 @@ public class GlobalExceptionHandler {
             BadCredentialsException ex) {
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), "Invalid Credentials");
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
     @ExceptionHandler(TokenInvalidException.class)
     public ResponseEntity<?> handleTokenNotFoundException(TokenInvalidException ex){
         var errorResponse = new ErrorResponse(LocalDateTime.now(), ex.getMessage());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex){
         var errorResponse = new ErrorResponse(LocalDateTime.now(), ex.getMessage());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }
 

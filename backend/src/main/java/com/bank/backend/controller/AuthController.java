@@ -9,7 +9,9 @@ import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.InvalidInputException;
 import com.bank.backend.service.AuthService;
 import com.bank.backend.service.RefreshTokenService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,25 +42,47 @@ public class AuthController {
 
         RegisterResponse registerResponse = authService.createUser(registerRequest);
 
-        return new ResponseEntity<>(registerResponse, HttpStatus.OK);
+        return ResponseEntity.ok().body(registerResponse);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
         LoginResponse loginResponse = authService.authenticateUser(loginRequest);
+        String refreshToken = refreshTokenService.createRefreshToken(loginResponse.userId());
 
-        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60) // 1 week
+                .sameSite("Lax")
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(loginResponse);
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@CookieValue("refreshToken") String oldRefreshToken){
         var refreshToken = refreshTokenService.findToken(oldRefreshToken);
         refreshTokenService.validateToken(refreshToken);
-
         Users user = refreshTokenService.findAssociatedUser(refreshToken);
-        String accessToken = authService.generateAccessToken(user.getUsername());
-        RefreshTokenResponse refreshTokenResponse = new RefreshTokenResponse(accessToken);
 
-        return new ResponseEntity<>(refreshTokenResponse, HttpStatus.OK);
+        String newRefreshToken = refreshTokenService.createRefreshToken(user.getUserId());
+        String newAccessToken = authService.generateAccessToken(user.getUsername());
+
+        RefreshTokenResponse refreshTokenResponse = new RefreshTokenResponse(newAccessToken);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", newRefreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60) // 1 week
+                .sameSite("Lax")
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(refreshTokenResponse);
     }
 }
