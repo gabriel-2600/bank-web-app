@@ -6,7 +6,7 @@ interface LoginInterface {
   password: string;
 }
 
-export const performLogin = async (loginData: LoginInterface) => {
+export const loginApi = async (loginData: LoginInterface) => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const response = await fetch(`${BASE_URL}/api/auth/login`, {

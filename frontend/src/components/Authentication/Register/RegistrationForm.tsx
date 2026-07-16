@@ -3,7 +3,7 @@ import {
   successfulToast,
   errorToast,
 } from "../../../util/toast-notifcation.ts";
-import { performRegistration } from "../../../auth/api/performRegistration.ts";
+import { registerApi } from "../../../auth/api/registerApi.ts";
 
 interface RegistrationFormInterface {
   fullName: string;
@@ -43,7 +43,7 @@ function RegistrationForm() {
     };
 
     try {
-      await performRegistration(registrationData);
+      await registerApi(registrationData);
 
       successfulToast("Registered Successfully!");
       reset();

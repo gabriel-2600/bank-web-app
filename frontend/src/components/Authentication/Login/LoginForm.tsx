@@ -1,7 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { errorToast, successfulToast } from "../../../util/toast-notifcation";
-import { performLogin } from "../../../auth/api/performLogin";
+import { loginApi } from "../../../auth/api/loginApi";
 import useAuth from "../../../auth/useAuth";
 
 interface LoginFormInterface {
@@ -31,7 +31,7 @@ function LoginForm() {
     };
 
     try {
-      const loginResponse = await performLogin(loginData);
+      const loginResponse = await loginApi(loginData);
       reset();
       successfulToast("Successful Login");
 

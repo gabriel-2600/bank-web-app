@@ -6,9 +6,7 @@ interface RegistrationInterface {
   password: string;
 }
 
-export const performRegistration = async (
-  registrationData: RegistrationInterface,
-) => {
+export const registerApi = async (registrationData: RegistrationInterface) => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const response = await fetch(`${BASE_URL}/api/auth/register`, {
