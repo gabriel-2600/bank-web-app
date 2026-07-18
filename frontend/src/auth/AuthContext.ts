@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { type LoginResponse } from "./authTypes";
+import { useContext } from "react";
 
 interface AuthContextType {
   accessToken: string | null;
@@ -8,6 +9,16 @@ interface AuthContextType {
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
-export default AuthContext;
+export function useAuth() {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
+}

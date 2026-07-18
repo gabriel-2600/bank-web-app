@@ -1,4 +1,4 @@
-import { errorHandler } from "../../util/error-handler";
+import { throwError } from "../../util/throw-error";
 
 interface RegistrationInterface {
   fullName: string;
@@ -19,7 +19,7 @@ export const registerApi = async (registrationData: RegistrationInterface) => {
   });
 
   if (!response.ok) {
-    await errorHandler(response);
+    await throwError(response);
   }
 
   return true;

@@ -1,4 +1,4 @@
-export const errorHandler = async (response: Response) => {
+export const throwError = async (response: Response) => {
   let errorMessage = "Server error, please try again later";
 
   try {

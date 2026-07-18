@@ -1,4 +1,4 @@
-import { errorHandler } from "../../util/error-handler";
+import { throwError } from "../../util/throw-error";
 import { type LoginResponse } from "../authTypes";
 
 interface LoginInterface {
@@ -19,7 +19,7 @@ export const loginApi = async (loginData: LoginInterface) => {
   });
 
   if (!response.ok) {
-    await errorHandler(response);
+    await throwError(response);
   }
 
   const data: LoginResponse = await response.json();

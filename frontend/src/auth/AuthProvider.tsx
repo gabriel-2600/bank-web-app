@@ -1,7 +1,7 @@
-import { useState } from "react";
-import AuthContext from "./AuthContext";
+import { useEffect, useState } from "react";
+import { AuthContext } from "./AuthContext";
 import { type LoginResponse } from "./authTypes";
-import { setNewToken } from "../api/clientApi";
+import { setClientAccessToken, registerCallback } from "../api/clientApi";
 
 interface AuthProviderInterface {
   children: React.ReactNode;
@@ -15,12 +15,23 @@ function AuthProvider({ children }: AuthProviderInterface) {
     const ACCESS_TOKEN = response.accessToken;
 
     setAccessToken(ACCESS_TOKEN);
-    setNewToken(ACCESS_TOKEN);
+    setClientAccessToken(ACCESS_TOKEN);
+
+    console.log("ACCESS TOKEN IS SET IN STATE: " + accessToken);
   };
 
   const logout = () => {
     setAccessToken(null);
+    setClientAccessToken(null);
+
+    console.log("LOGOUT SUCCESS: " + accessToken);
   };
+
+  useEffect(() => {
+    registerCallback((token: string | null) => {
+      setAccessToken(token);
+    });
+  }, []);
 
   return (
     <AuthContext value={{ accessToken, isAuthenticated, login, logout }}>

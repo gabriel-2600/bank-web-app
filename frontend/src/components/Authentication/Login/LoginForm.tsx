@@ -2,7 +2,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { errorToast, successfulToast } from "../../../util/toast-notifcation";
 import { loginApi } from "../../../auth/api/loginApi";
-import useAuth from "../../../auth/useAuth";
+import { useAuth } from "../../../auth/AuthContext";
 
 interface LoginFormInterface {
   username: string;
