@@ -80,11 +80,10 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
-                .body("Unauthenticated");
+                .build();
     }
 
     @PostMapping("/refresh")
-    @Transactional
     public ResponseEntity<?> refreshToken(@CookieValue("refreshToken") String oldRefreshToken){
         var refreshToken = refreshTokenService.findToken(oldRefreshToken);
         refreshTokenService.validateToken(refreshToken);
