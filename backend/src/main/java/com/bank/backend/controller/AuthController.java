@@ -9,6 +9,7 @@ import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.InvalidInputException;
 import com.bank.backend.service.AuthService;
 import com.bank.backend.service.RefreshTokenService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +63,28 @@ public class AuthController {
                 .body(loginResponse);
     }
 
+    @DeleteMapping("/logout")
+    public ResponseEntity<?> logoutUser(@CookieValue(value = "refreshToken", required = false)String refreshToken){
+        if (refreshToken != null) {
+            var token = refreshTokenService.findToken(refreshToken);
+            refreshTokenService.deleteToken(token);
+        }
+
+        ResponseCookie deleteCookie = ResponseCookie.from("refreshToken")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Lax")
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+                .body("Unauthenticated");
+    }
+
     @PostMapping("/refresh")
+    @Transactional
     public ResponseEntity<?> refreshToken(@CookieValue("refreshToken") String oldRefreshToken){
         var refreshToken = refreshTokenService.findToken(oldRefreshToken);
         refreshTokenService.validateToken(refreshToken);
