@@ -15,6 +15,7 @@ export const registerApi = async (registrationData: RegistrationInterface) => {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(registrationData),
   });
 

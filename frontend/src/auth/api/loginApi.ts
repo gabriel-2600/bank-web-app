@@ -15,6 +15,7 @@ export const loginApi = async (loginData: LoginInterface) => {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(loginData),
   });
 

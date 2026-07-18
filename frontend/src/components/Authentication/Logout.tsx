@@ -1,3 +1,4 @@
+import { logoutApi } from "../../auth/api/logoutApi";
 import { useAuth } from "../../auth/AuthContext";
 import { useNavigate } from "react-router";
 
@@ -7,6 +8,7 @@ function Logout() {
 
   const performLogout = () => {
     logout();
+    logoutApi();
     navigate("/login", { replace: true });
   };
   return (
