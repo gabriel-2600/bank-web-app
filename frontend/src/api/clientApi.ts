@@ -34,17 +34,6 @@ const refreshApi = async () => {
   notifySetState(data.accessToken);
 };
 
-export const setClientAccessToken = (token: string | null) => {
-  ACCESS_TOKEN = token;
-  console.log("ACCESS TOKEN IS SET IN TYPESCRIPT: " + ACCESS_TOKEN);
-};
-
-export const getClientAccessT0ken = () => ACCESS_TOKEN;
-
-export const registerCallback = (callback: (token: string | null) => void) => {
-  callbackCopy = callback;
-};
-
 function notifySetState(update: string | null) {
   if (!callbackCopy) {
     console.error("Call back is null");
@@ -53,6 +42,17 @@ function notifySetState(update: string | null) {
 
   callbackCopy(update);
 }
+
+export const setClientAccessToken = (token: string | null) => {
+  ACCESS_TOKEN = token;
+  console.log("ACCESS TOKEN IS SET IN TYPESCRIPT: " + ACCESS_TOKEN);
+};
+
+// export const getClientAccessT0ken = () => ACCESS_TOKEN;
+
+export const registerCallback = (callback: (token: string | null) => void) => {
+  callbackCopy = callback;
+};
 
 export const sendRequest = async (
   method: HttpMethods,
@@ -87,15 +87,16 @@ export const sendRequest = async (
   if (response.status === 401) {
     if (!retried) {
       await refreshApi();
+
       return sendRequest(method, endPoint, body, true);
     } else {
       setClientAccessToken(null);
       notifySetState(null);
 
-      throwError(response);
+      await throwError(response);
     }
   } else if (!response.ok) {
-    throwError(response);
+    await throwError(response);
   }
 
   const data = await response.json();
