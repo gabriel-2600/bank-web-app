@@ -10,12 +10,10 @@ export const publicLoader = async () => {
   const isInitialized = getIsInitialized();
 
   if (isInitialized && token) {
-    console.log("STAY HERE IN APP");
     return redirect("/app");
   }
 
   if (isInitialized && !token) {
-    console.log("STAY IN PUBLIC");
     return null;
   }
 
@@ -26,7 +24,7 @@ export const publicLoader = async () => {
       return redirect("/app");
     }
   } catch (error) {
-    console.error(error);
+    console.error("ERROR: " + error);
   }
 
   return null;

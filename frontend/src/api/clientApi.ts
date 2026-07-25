@@ -28,12 +28,11 @@ export const refreshApi = async () => {
         notifySetState(null);
       }
 
-      return null;
+      return;
     }
 
     const data: RefreshResponse = await response.json();
 
-    console.log(data);
     setClientAccessToken(data.accessToken);
     notifySetState(data.accessToken);
 
@@ -45,7 +44,7 @@ export const refreshApi = async () => {
       notifySetState(null);
     }
 
-    return null;
+    return;
   } finally {
     isInitialized = true;
   }
@@ -61,7 +60,7 @@ function notifySetState(update: string | null) {
 
 export const setClientAccessToken = (token: string | null) => {
   ACCESS_TOKEN = token;
-  console.log("ACCESS TOKEN IS SET IN TYPESCRIPT: " + ACCESS_TOKEN);
+  console.log("ACCESS TOKEN IS SET IN clientApi.ts LINE 63: " + ACCESS_TOKEN);
 };
 
 export const getClientAccessToken = () => ACCESS_TOKEN;
