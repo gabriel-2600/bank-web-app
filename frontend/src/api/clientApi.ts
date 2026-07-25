@@ -8,35 +8,51 @@ interface RefreshResponse {
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 let ACCESS_TOKEN: string | null;
+let isInitialized = false;
 let callbackCopy: ((token: string | null) => void) | null = null;
 
-const refreshApi = async () => {
-  const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
-    mode: "cors",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+export const refreshApi = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
 
-  if (!response.ok) {
+    if (!response.ok) {
+      setClientAccessToken(null);
+      if (callbackCopy) {
+        notifySetState(null);
+      }
+
+      return null;
+    }
+
+    const data: RefreshResponse = await response.json();
+
+    console.log(data);
+    setClientAccessToken(data.accessToken);
+    notifySetState(data.accessToken);
+
+    return data.accessToken;
+  } catch {
     setClientAccessToken(null);
-    notifySetState(null);
 
-    await throwError(response);
+    if (callbackCopy) {
+      notifySetState(null);
+    }
+
+    return null;
+  } finally {
+    isInitialized = true;
   }
-
-  const data: RefreshResponse = await response.json();
-
-  console.log(data);
-  setClientAccessToken(data.accessToken);
-  notifySetState(data.accessToken);
 };
 
 function notifySetState(update: string | null) {
   if (!callbackCopy) {
-    console.error("Call back is null");
     throw new Error("Call back is null");
   }
 
@@ -48,7 +64,9 @@ export const setClientAccessToken = (token: string | null) => {
   console.log("ACCESS TOKEN IS SET IN TYPESCRIPT: " + ACCESS_TOKEN);
 };
 
-// export const getClientAccessT0ken = () => ACCESS_TOKEN;
+export const getClientAccessToken = () => ACCESS_TOKEN;
+
+export const getIsInitialized = () => isInitialized;
 
 export const registerCallback = (callback: (token: string | null) => void) => {
   callbackCopy = callback;

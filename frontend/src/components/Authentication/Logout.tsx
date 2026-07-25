@@ -6,9 +6,9 @@ function Logout() {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const performLogout = () => {
+  const performLogout = async () => {
+    await logoutApi();
     logout();
-    logoutApi();
     navigate("/login", { replace: true });
   };
   return (

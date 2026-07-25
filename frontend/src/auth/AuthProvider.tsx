@@ -16,15 +16,11 @@ function AuthProvider({ children }: AuthProviderInterface) {
 
     setAccessToken(ACCESS_TOKEN);
     setClientAccessToken(ACCESS_TOKEN);
-
-    console.log("ACCESS TOKEN IS SET IN STATE: " + accessToken);
   };
 
   const logout = () => {
     setAccessToken(null);
     setClientAccessToken(null);
-
-    console.log("LOGOUT SUCCESS: " + accessToken);
   };
 
   useEffect(() => {
