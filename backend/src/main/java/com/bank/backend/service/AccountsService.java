@@ -19,7 +19,16 @@ public class AccountsService {
         this.accountsRepoInterface = accountsRepoInterface;
     }
 
-    public List<GetAccountResponse> getAccounts(Long userId) {
+    public void createAccount(CustomUserDetails userDetails, CreateAccountRequest createAccountRequest) {
+        Accounts account = new Accounts();
+        account.setUserId(userDetails.getUserId());
+        account.setAccountName(createAccountRequest.accountName().trim());
+        account.setBalance(createAccountRequest.balance());
+
+        accountsRepoInterface.save(account);
+    }
+
+    public List<GetAccountResponse> getAllAccounts(Long userId) {
         List<Accounts> accounts = accountsRepoInterface.findByUserId(userId).orElseThrow(() -> new NotFoundException("Account Not Found"));
 
         return accounts.stream()
@@ -30,13 +39,11 @@ public class AccountsService {
                 .toList();
     }
 
-    public void createAccount(@AuthenticationPrincipal CustomUserDetails userDetails, CreateAccountRequest createAccountRequest) {
-        Accounts account = new Accounts();
-        account.setUserId(userDetails.getUserId());
-        account.setAccountName(createAccountRequest.accountName().trim());
-        account.setBalance(createAccountRequest.balance());
+    public GetAccountResponse getAccount(int accountId, CustomUserDetails userDetails){
+        Accounts account = accountsRepoInterface.findByAccountIdAndUserId(accountId, userDetails.getUserId())
+                .orElseThrow(() -> new NotFoundException("Account Not Found"));
 
-        accountsRepoInterface.save(account);
+        return new GetAccountResponse(account.getAccountId(), account.getAccountName(), account.getBalance());
     }
 
     public void deleteAccount(int accountId, Long userId) {

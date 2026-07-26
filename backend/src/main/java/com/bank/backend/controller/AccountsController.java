@@ -3,7 +3,6 @@ package com.bank.backend.controller;
 import com.bank.backend.dto.AccountsDTO.request.CreateAccountRequest;
 import com.bank.backend.dto.AccountsDTO.response.GetAccountResponse;
 import com.bank.backend.exceptions.InvalidInputException;
-import com.bank.backend.exceptions.NotFoundException;
 import com.bank.backend.security.CustomUserDetails;
 import com.bank.backend.service.AccountsService;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +37,26 @@ public class AccountsController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get/all")
     public ResponseEntity<?> getAllAccounts(@AuthenticationPrincipal CustomUserDetails userDetails){
         if(userDetails.getUserId() == null){
             throw new BadCredentialsException("Invalid");
         }
 
-        List<GetAccountResponse> accountsList = accountsService.getAccounts(userDetails.getUserId());
+        List<GetAccountResponse> accountsList = accountsService.getAllAccounts(userDetails.getUserId());
 
         return ResponseEntity.ok().body(accountsList);
+    }
+
+    @GetMapping("/get/{accountId}")
+    public ResponseEntity<?> getAccount(@PathVariable int accountId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        if(userDetails.getUserId() == null){
+            throw new BadCredentialsException("Invalid");
+        }
+
+        GetAccountResponse getAccountResponse = accountsService.getAccount(accountId, userDetails);
+
+        return ResponseEntity.ok().body(getAccountResponse);
     }
 
     @DeleteMapping("/delete/{accountId}")
