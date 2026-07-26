@@ -1,9 +1,9 @@
 package com.bank.backend.service;
 
-import com.bank.backend.dto.request.LoginRequest;
-import com.bank.backend.dto.request.RegisterRequest;
-import com.bank.backend.dto.response.LoginResponse;
-import com.bank.backend.dto.response.RegisterResponse;
+import com.bank.backend.dto.AuthDTO.request.LoginRequest;
+import com.bank.backend.dto.AuthDTO.request.RegisterRequest;
+import com.bank.backend.dto.AuthDTO.response.LoginResponse;
+import com.bank.backend.dto.AuthDTO.response.RegisterResponse;
 import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.AlreadyExistsException;
 import com.bank.backend.repository.UsersRepoInterface;

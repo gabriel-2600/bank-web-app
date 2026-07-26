@@ -1,15 +1,14 @@
 package com.bank.backend.controller;
 
-import com.bank.backend.dto.request.LoginRequest;
-import com.bank.backend.dto.request.RegisterRequest;
-import com.bank.backend.dto.response.LoginResponse;
-import com.bank.backend.dto.response.RefreshTokenResponse;
-import com.bank.backend.dto.response.RegisterResponse;
+import com.bank.backend.dto.AuthDTO.request.LoginRequest;
+import com.bank.backend.dto.AuthDTO.request.RegisterRequest;
+import com.bank.backend.dto.AuthDTO.response.LoginResponse;
+import com.bank.backend.dto.AuthDTO.response.RefreshTokenResponse;
+import com.bank.backend.dto.AuthDTO.response.RegisterResponse;
 import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.InvalidInputException;
 import com.bank.backend.service.AuthService;
 import com.bank.backend.service.RefreshTokenService;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;

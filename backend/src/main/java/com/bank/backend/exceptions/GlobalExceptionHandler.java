@@ -39,8 +39,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex){
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(NotFoundException ex){
         var errorResponse = new ErrorResponse(LocalDateTime.now(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);

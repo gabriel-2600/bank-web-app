@@ -2,7 +2,7 @@ package com.bank.backend.service;
 import com.bank.backend.entity.RefreshToken;
 import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.TokenInvalidException;
-import com.bank.backend.exceptions.UserNotFoundException;
+import com.bank.backend.exceptions.NotFoundException;
 import com.bank.backend.repository.RefreshTokenRepoInterface;
 import com.bank.backend.repository.UsersRepoInterface;
 import jakarta.transaction.Transactional;
@@ -64,7 +64,7 @@ public class RefreshTokenService  {
     }
 
     public Users findAssociatedUser(RefreshToken refreshToken){
-        return usersRepoInterface.findById(refreshToken.getUserId()).orElseThrow(() -> new UserNotFoundException("User Not Found"));
+        return usersRepoInterface.findById(refreshToken.getUserId()).orElseThrow(() -> new NotFoundException("User Not Found"));
     }
 
     public void deleteToken(RefreshToken refreshToken){
