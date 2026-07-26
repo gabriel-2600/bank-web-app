@@ -1,29 +1,36 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { successfulToast } from "../../util/toast-notifcation";
-import { useOutletContext } from "react-router";
-import type { AccountInterface } from "../../types/AccountInterface";
-
-type AccountContextType = {
-  setAccounts: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
-};
+import { errorToast, successfulToast } from "../../util/toast-notifcation";
+import { createAccountApi } from "../../api/Account/createAccountApi";
 
 interface AccountFormInterface {
-  accountID: string;
   accountName: string;
   balance: number;
 }
 
 function CreateBankAccountForm() {
-  const { setAccounts } = useOutletContext<AccountContextType>();
   const { register, handleSubmit, reset } = useForm<AccountFormInterface>();
 
   const onSubmit: SubmitHandler<AccountFormInterface> = (data) => {
-    const accountID = crypto.randomUUID();
-    data.accountID = accountID;
+    if (!data.accountName || data.balance < 0) {
+      errorToast("Fields cannot be empty!");
+      return;
+    }
 
-    setAccounts((prevAccounts) => [...prevAccounts, data]);
-    reset();
-    successfulToast("Registered Successfully");
+    const createAccountData = {
+      accountName: data.accountName,
+      balance: data.balance,
+    };
+
+    try {
+      createAccountApi(createAccountData);
+      reset();
+      successfulToast("Bank Account Created");
+      return;
+    } catch (error) {
+      errorToast(
+        error instanceof Error ? error.message : "Create Bank Account Failed",
+      );
+    }
   };
 
   return (

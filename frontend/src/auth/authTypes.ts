@@ -1,5 +1,6 @@
+import type { UserInterface } from "../types/UserInterface";
+
 export interface LoginResponse {
   accessToken: string;
-  userId: number;
-  username: string;
+  user: UserInterface;
 }

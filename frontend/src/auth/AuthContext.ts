@@ -4,7 +4,10 @@ import { useContext } from "react";
 
 interface AuthContextType {
   accessToken: string | null;
-  isAuthenticated: boolean;
+  user: {
+    userId: number;
+    username: string;
+  } | null;
   login: (response: LoginResponse) => void;
   logout: () => void;
 }

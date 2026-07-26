@@ -116,8 +116,13 @@ export const sendRequest = async (
     await throwError(response);
   }
 
+  if (response.status === 204) {
+    console.log("SUCCESS 204 NO CONTENT");
+    return;
+  }
+
   const data = await response.json();
-  console.log(data);
+  console.log("CLIENT API LINE 120 " + data);
 
   return data;
 };
