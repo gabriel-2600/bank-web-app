@@ -5,6 +5,8 @@ import com.bank.backend.dto.AccountsDTO.response.GetAccountResponse;
 import com.bank.backend.entity.Accounts;
 import com.bank.backend.exceptions.NotFoundException;
 import com.bank.backend.repository.AccountsRepoInterface;
+import com.bank.backend.security.CustomUserDetails;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,9 +30,9 @@ public class AccountsService {
                 .toList();
     }
 
-    public void createAccount(CreateAccountRequest createAccountRequest) {
+    public void createAccount(@AuthenticationPrincipal CustomUserDetails userDetails, CreateAccountRequest createAccountRequest) {
         Accounts account = new Accounts();
-        account.setUserId(createAccountRequest.userId());
+        account.setUserId(userDetails.getUserId());
         account.setAccountName(createAccountRequest.accountName().trim());
         account.setBalance(createAccountRequest.balance());
 

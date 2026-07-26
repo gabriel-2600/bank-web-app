@@ -47,7 +47,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
         LoginResponse loginResponse = authService.authenticateUser(loginRequest);
-        String refreshToken = refreshTokenService.createRefreshToken(loginResponse.userId());
+        String refreshToken = refreshTokenService.createRefreshToken(loginResponse.userDetailsResponse().userId());
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)

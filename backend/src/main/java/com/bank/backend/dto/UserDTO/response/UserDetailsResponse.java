@@ -1,4 +1,4 @@
-package com.bank.backend.dto.UserDTO;
+package com.bank.backend.dto.UserDTO.response;
 
-public record Response() {
+public record UserDetailsResponse(Long userId, String username) {
 }

@@ -24,16 +24,16 @@ public class AccountsController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createBankAccount(@RequestBody CreateAccountRequest createAccountRequest){
+    public ResponseEntity<?> createBankAccount(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody CreateAccountRequest createAccountRequest){
         if (createAccountRequest.accountName() == null || createAccountRequest.accountName().isBlank()) {
             throw new InvalidInputException("Invalid Input");
         }
 
-        if (createAccountRequest.balance() == null || createAccountRequest.balance().compareTo(BigDecimal.ZERO) <= 0) {
+        if (createAccountRequest.balance() == null || createAccountRequest.balance().compareTo(BigDecimal.ZERO) < 0) {
             throw new InvalidInputException("Invalid Input");
         }
 
-        accountsService.createAccount(createAccountRequest);
+        accountsService.createAccount(userDetails, createAccountRequest);
 
         return ResponseEntity.noContent().build();
     }

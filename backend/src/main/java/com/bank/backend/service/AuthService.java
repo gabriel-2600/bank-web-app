@@ -4,6 +4,7 @@ import com.bank.backend.dto.AuthDTO.request.LoginRequest;
 import com.bank.backend.dto.AuthDTO.request.RegisterRequest;
 import com.bank.backend.dto.AuthDTO.response.LoginResponse;
 import com.bank.backend.dto.AuthDTO.response.RegisterResponse;
+import com.bank.backend.dto.UserDTO.response.UserDetailsResponse;
 import com.bank.backend.entity.Users;
 import com.bank.backend.exceptions.AlreadyExistsException;
 import com.bank.backend.repository.UsersRepoInterface;
@@ -54,8 +55,9 @@ public class AuthService {
 
         final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String accessToken = generateAccessToken(userDetails.getUsername());
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse(userDetails.getUserId(), userDetails.getUsername());
 
-        return new LoginResponse(accessToken, userDetails.getUserId(), userDetails.getUsername());
+        return new LoginResponse(accessToken, userDetailsResponse);
     }
 
     public String generateAccessToken(String username){
