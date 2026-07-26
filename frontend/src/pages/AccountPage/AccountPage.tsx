@@ -1,19 +1,24 @@
-import { useOutletContext, useParams } from "react-router";
+import { useParams } from "react-router";
 import type { AccountInterface } from "../../types/AccountInterface";
-import TransactionButton from "../../components/Account/Transaction/TransactionButton";
-
-type AppOutletContext = {
-  accounts: AccountInterface[];
-  setAccounts: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
-};
+// import TransactionButton from "../../components/Account/Transaction/TransactionButton";
+import { useEffect, useState } from "react";
+import { getBankAccountApi } from "../../api/Account/accountApi";
 
 function AccountPage() {
-  const { accounts, setAccounts } = useOutletContext<AppOutletContext>();
   const { accountId } = useParams<{ accountId: string }>();
-  const account = accounts.find((a) => a.accountID === accountId);
+  const [account, setAccount] = useState<AccountInterface | null>(null);
 
-  if (!accountId || !account) {
-    throw new Response("Account not found", { status: 404 });
+  useEffect(() => {
+    async function getSingleAccount() {
+      const singleAccount = await getBankAccountApi(Number(accountId));
+      setAccount(singleAccount);
+    }
+
+    getSingleAccount();
+  }, [accountId]);
+
+  if (!account) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -29,7 +34,7 @@ function AccountPage() {
           Account ID
         </p>
         <p className="font-mono text-xs text-black/50 sm:text-sm">
-          {account.accountID}
+          {account.accountId}
         </p>
 
         <div className="mt-6">
@@ -45,12 +50,12 @@ function AccountPage() {
         </div>
 
         <div className="mt-6 border-t border-black/10 pt-6">
-          <TransactionButton
+          {/* <TransactionButton
             accountId={accountId}
             account={account}
             accounts={accounts}
             setAccounts={setAccounts}
-          />
+          /> */}
         </div>
       </section>
     </main>
