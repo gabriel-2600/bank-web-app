@@ -44,9 +44,9 @@ public class AccountsController {
             throw new BadCredentialsException("Invalid");
         }
 
-        List<GetAccountResponse> accounstList = accountsService.getAccounts(userDetails.getUserId());
+        List<GetAccountResponse> accountsList = accountsService.getAccounts(userDetails.getUserId());
 
-        return ResponseEntity.ok().body(accounstList);
+        return ResponseEntity.ok().body(accountsList);
     }
 
     @DeleteMapping("/delete/{accountId}")
