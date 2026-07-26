@@ -1,20 +1,18 @@
-import { useOutletContext, Link } from "react-router";
+import { Link } from "react-router";
 import type { AccountInterface } from "../../types/AccountInterface";
 
-type AccountContextType = {
+interface DisplayAccountsProps {
   accounts: AccountInterface[];
-};
+}
 
-function DisplayAccounts() {
-  const { accounts } = useOutletContext<AccountContextType>();
-
+function DisplayAccounts({ accounts }: DisplayAccountsProps) {
   return (
     <section className="mt-5 rounded-2xl border border-black/10 bg-white p-3 shadow-sm sm:mt-6 sm:p-4">
       <ul className="space-y-2">
         {accounts.map((account) => (
-          <li key={account.accountID}>
+          <li key={account.accountId}>
             <Link
-              to={`account/${account.accountID}`}
+              to={`account/${account.accountId}`}
               className="group flex items-center justify-between rounded-xl border border-black/10 bg-white px-4 py-3 transition-colors hover:border-[#8494FF]/40 hover:bg-[#8494FF]/5"
             >
               <span className="text-sm font-medium text-black sm:text-base">

@@ -1,6 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { errorToast, successfulToast } from "../../util/toast-notifcation";
-import { createAccountApi } from "../../api/Account/createAccountApi";
+import { createBankAccountApi } from "../../api/Account/accountApi";
 
 interface AccountFormInterface {
   accountName: string;
@@ -10,7 +10,7 @@ interface AccountFormInterface {
 function CreateBankAccountForm() {
   const { register, handleSubmit, reset } = useForm<AccountFormInterface>();
 
-  const onSubmit: SubmitHandler<AccountFormInterface> = (data) => {
+  const onSubmit: SubmitHandler<AccountFormInterface> = async (data) => {
     if (!data.accountName || data.balance < 0) {
       errorToast("Fields cannot be empty!");
       return;
@@ -22,9 +22,10 @@ function CreateBankAccountForm() {
     };
 
     try {
-      createAccountApi(createAccountData);
+      await createBankAccountApi(createAccountData);
       reset();
       successfulToast("Bank Account Created");
+
       return;
     } catch (error) {
       errorToast(

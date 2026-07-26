@@ -8,6 +8,7 @@ function CreateAccountPage() {
           Create a bank account
         </h1>
       </div>
+
       <CreateBankAccountForm />
     </section>
   );

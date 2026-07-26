@@ -1,6 +1,19 @@
+import { useState, useEffect } from "react";
 import DisplayAccounts from "../components/HomePage/DisplayAccounts";
+import { getAllBankAccountsApi } from "../api/Account/accountApi";
+import type { AccountInterface } from "../types/AccountInterface";
 
 function HomePage() {
+  const [accounts, setAccounts] = useState<AccountInterface[]>([]);
+
+  useEffect(() => {
+    async function returnAllBankAccounts() {
+      const allAccounts = await getAllBankAccountsApi();
+      setAccounts(allAccounts);
+    }
+
+    returnAllBankAccounts();
+  }, []);
   return (
     <>
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
@@ -12,7 +25,8 @@ function HomePage() {
             Select one of your bank accounts to view details.
           </p>
         </section>
-        <DisplayAccounts />
+
+        <DisplayAccounts accounts={accounts} />
       </main>
     </>
   );

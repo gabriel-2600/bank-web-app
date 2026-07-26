@@ -117,12 +117,12 @@ export const sendRequest = async (
   }
 
   if (response.status === 204) {
-    console.log("SUCCESS 204 NO CONTENT");
+    console.log("sendRequest - SUCCESS 204 NO CONTENT");
     return;
   }
 
   const data = await response.json();
-  console.log("CLIENT API LINE 120 " + data);
+  console.log("sendRequest - CLIENT API LINE 125 ", data);
 
   return data;
 };
