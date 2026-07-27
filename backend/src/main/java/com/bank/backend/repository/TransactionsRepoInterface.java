@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface TransactionsRepoInterface extends JpaRepository<Transactions, Integer> {
-    Optional<List<Transactions>> findAllByAccountId(int accountId);
+    List<Transactions> findAllByAccountId(int accountId);
     Optional<Transactions> findByAccountId(int accountId);
 }

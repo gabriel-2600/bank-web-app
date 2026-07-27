@@ -2,15 +2,14 @@ package com.bank.backend.controller;
 
 import com.bank.backend.dto.Transactions.request.DepositRequest;
 import com.bank.backend.dto.Transactions.request.WithdrawRequest;
-import com.bank.backend.exceptions.InvalidInputException;
+import com.bank.backend.dto.Transactions.response.GetTransactionResponse;
 import com.bank.backend.security.CustomUserDetails;
 import com.bank.backend.service.TransactionsService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/transaction")
@@ -37,5 +36,16 @@ public class TransactionsController {
         transactionsService.depositTransaction(depositRequest, userDetails);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/get/all/{accountId}")
+    public ResponseEntity<List<GetTransactionResponse>> getAllTransaction(
+            @PathVariable int accountId,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        List<GetTransactionResponse> allTransactions =
+                transactionsService.getAllTransactions(accountId, userDetails);
+
+        return ResponseEntity.ok(allTransactions);
     }
 }
