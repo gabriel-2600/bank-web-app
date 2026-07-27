@@ -6,7 +6,6 @@ import com.bank.backend.dto.Transactions.response.GetTransactionResponse;
 import com.bank.backend.security.CustomUserDetails;
 import com.bank.backend.service.TransactionsService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
