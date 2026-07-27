@@ -6,7 +6,6 @@ import com.bank.backend.entity.Accounts;
 import com.bank.backend.exceptions.NotFoundException;
 import com.bank.backend.repository.AccountsRepoInterface;
 import com.bank.backend.security.CustomUserDetails;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class AccountsService {
         this.accountsRepoInterface = accountsRepoInterface;
     }
 
-    public void createAccount(CustomUserDetails userDetails, CreateAccountRequest createAccountRequest) {
+    public void createOrUpdateAccount(CustomUserDetails userDetails, CreateAccountRequest createAccountRequest) {
         Accounts account = new Accounts();
         account.setUserId(userDetails.getUserId());
         account.setAccountName(createAccountRequest.accountName().trim());

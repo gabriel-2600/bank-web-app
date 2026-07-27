@@ -32,7 +32,7 @@ public class AccountsController {
             throw new InvalidInputException("Invalid Input");
         }
 
-        accountsService.createAccount(userDetails, createAccountRequest);
+        accountsService.createOrUpdateAccount( userDetails, createAccountRequest);
 
         return ResponseEntity.noContent().build();
     }
