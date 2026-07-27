@@ -1,22 +1,15 @@
-import { useState } from "react";
-import Transfer from "./Transfer";
-import type { AccountInterface } from "../../../types/AccountInterface";
+import { useState, type Dispatch } from "react";
+// import Transfer from "./Transfer";
 import Withdraw from "./Withdraw";
 import Deposit from "./Deposit";
+import type { AccountInterface } from "../../../types/AccountInterface";
 
 type TransactionButtonProps = {
-  accountId: string;
   account: AccountInterface;
-  accounts: AccountInterface[];
-  setAccounts: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
+  setAccount: Dispatch<AccountInterface>;
 };
 
-function TransactionButton({
-  accountId,
-  account,
-  accounts,
-  setAccounts,
-}: TransactionButtonProps) {
+function TransactionButton({ account, setAccount }: TransactionButtonProps) {
   const [isTransferClicked, setIsTransferClicked] = useState(false);
   const [isDepositClicked, setIsDepositClicked] = useState(false);
   const [isWithdrawClicked, setIsWithdrawClicked] = useState(false);
@@ -87,23 +80,19 @@ function TransactionButton({
       {hasOpenPanel && (
         <div className="rounded-xl border border-black/10 bg-[#8494FF]/[0.04] p-4 sm:p-5">
           {isDepositClicked && (
-            <Deposit accountId={accountId} setAccounts={setAccounts} />
+            <Deposit account={account} setAccount={setAccount} />
           )}
           {isWithdrawClicked && (
-            <Withdraw
-              accountId={accountId}
-              account={account}
-              setAccounts={setAccounts}
-            />
+            <Withdraw account={account} setAccount={setAccount} />
           )}
-          {isTransferClicked && (
+          {/* {isTransferClicked && (
             <Transfer
               accountId={accountId}
               account={account}
               accounts={accounts}
               setAccounts={setAccounts}
             />
-          )}
+          )} */}
         </div>
       )}
     </div>

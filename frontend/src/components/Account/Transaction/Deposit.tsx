@@ -1,11 +1,14 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 import type { AccountInterface } from "../../../types/AccountInterface";
-import { successfulToast } from "../../../util/toast-notifcation";
+import { errorToast, successfulToast } from "../../../util/toast-notifcation";
+import { depositApi } from "../../../api/Transaction/transactionApi";
+import type { Dispatch } from "react";
+import { getBankAccountApi } from "../../../api/Account/accountApi";
 
 type DepositProps = {
-  accountId: string;
-  setAccounts: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
+  account: AccountInterface;
+  setAccount: Dispatch<AccountInterface>;
 };
 
 interface DepositFormInterface {
@@ -15,20 +18,31 @@ interface DepositFormInterface {
 const inputClass =
   "w-full rounded-xl border border-black/15 bg-white px-3.5 py-2.5 text-sm text-black outline-none transition-colors placeholder:text-black/40 focus:border-[#8494FF]";
 
-function Deposit({ accountId, setAccounts }: DepositProps) {
+function Deposit({ account, setAccount }: DepositProps) {
   const { register, handleSubmit, reset } = useForm<DepositFormInterface>();
 
-  const onSubmit: SubmitHandler<DepositFormInterface> = ({ amount }) => {
-    setAccounts((prevAccounts) =>
-      prevAccounts.map((account) =>
-        account.accountID === accountId
-          ? { ...account, balance: account.balance + amount }
-          : account,
-      ),
-    );
+  const onSubmit: SubmitHandler<DepositFormInterface> = async (data) => {
+    if (!data.amount) {
+      errorToast("Amount cannot be empty");
+      return;
+    }
 
-    reset();
-    successfulToast("Deposit Successful");
+    const depositData = {
+      accountId: account.accountId,
+      amount: data.amount,
+    };
+
+    try {
+      await depositApi(depositData);
+
+      reset();
+      successfulToast("Deposit Successful");
+
+      const refreshAccount = await getBankAccountApi(account.accountId);
+      setAccount(refreshAccount);
+    } catch (error) {
+      errorToast(error instanceof Error ? error.message : "Deposit Failed");
+    }
   };
 
   return (

@@ -1,8 +1,9 @@
 import { useParams } from "react-router";
 import type { AccountInterface } from "../../types/AccountInterface";
-// import TransactionButton from "../../components/Account/Transaction/TransactionButton";
 import { useEffect, useState } from "react";
 import { getBankAccountApi } from "../../api/Account/accountApi";
+import TransactionButton from "../../components/Account/Transaction/TransactionButton";
+import { errorToast } from "../../util/toast-notifcation";
 
 function AccountPage() {
   const { accountId } = useParams<{ accountId: string }>();
@@ -10,8 +11,14 @@ function AccountPage() {
 
   useEffect(() => {
     async function getSingleAccount() {
-      const singleAccount = await getBankAccountApi(Number(accountId));
-      setAccount(singleAccount);
+      try {
+        const singleAccount = await getBankAccountApi(Number(accountId));
+        setAccount(singleAccount);
+      } catch (error) {
+        errorToast(
+          error instanceof Error ? error.message : "Account Retrieval Failed",
+        );
+      }
     }
 
     getSingleAccount();
@@ -50,12 +57,7 @@ function AccountPage() {
         </div>
 
         <div className="mt-6 border-t border-black/10 pt-6">
-          {/* <TransactionButton
-            accountId={accountId}
-            account={account}
-            accounts={accounts}
-            setAccounts={setAccounts}
-          /> */}
+          <TransactionButton account={account} setAccount={setAccount} />
         </div>
       </section>
     </main>

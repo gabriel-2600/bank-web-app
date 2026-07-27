@@ -1,13 +1,13 @@
-import { useForm, type SubmitHandler } from "react-hook-form";
-
 import type { AccountInterface } from "../../../types/AccountInterface";
-import { successfulToast } from "../../../util/toast-notifcation";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { errorToast, successfulToast } from "../../../util/toast-notifcation";
+import { withdrawApi } from "../../../api/Transaction/transactionApi";
+import { getBankAccountApi } from "../../../api/Account/accountApi";
 
-type WithdrawProps = {
-  accountId: string;
+interface WithdrawProps {
   account: AccountInterface;
-  setAccounts: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
-};
+  setAccount: React.Dispatch<AccountInterface>;
+}
 
 interface WithdrawFormInterface {
   amount: number;
@@ -16,24 +16,35 @@ interface WithdrawFormInterface {
 const inputClass =
   "w-full rounded-xl border border-black/15 bg-white px-3.5 py-2.5 text-sm text-black outline-none transition-colors placeholder:text-black/40 focus:border-[#8494FF]";
 
-function Withdraw({ accountId, account, setAccounts }: WithdrawProps) {
+function Withdraw({ account, setAccount }: WithdrawProps) {
   const { register, watch, handleSubmit, reset } =
     useForm<WithdrawFormInterface>();
   const amountValue = watch("amount");
   const hasAmount = Number.isFinite(amountValue);
   const isBalanceSufficient = amountValue <= account.balance;
 
-  const onSubmit: SubmitHandler<WithdrawFormInterface> = ({ amount }) => {
-    setAccounts((prevAccounts) =>
-      prevAccounts.map((account) =>
-        account.accountID === accountId
-          ? { ...account, balance: account.balance - amount }
-          : account,
-      ),
-    );
+  const onSubmit: SubmitHandler<WithdrawFormInterface> = async (data) => {
+    if (!data.amount) {
+      errorToast("Amount cannot be empty");
+      return;
+    }
 
-    reset();
-    successfulToast("Withdraw Successful");
+    const withdrawData = {
+      accountId: account.accountId,
+      amount: data.amount,
+    };
+
+    try {
+      await withdrawApi(withdrawData);
+
+      reset();
+      successfulToast("Deposit Successful");
+
+      const refreshAccount = await getBankAccountApi(account.accountId);
+      setAccount(refreshAccount);
+    } catch (error) {
+      errorToast(error instanceof Error ? error.message : "Deposit Failed");
+    }
   };
 
   return (

@@ -103,16 +103,22 @@ export const sendRequest = async (
 
   if (response.status === 401) {
     if (!retried) {
-      await refreshApi();
+      try {
+        await refreshApi();
 
-      return sendRequest(method, endPoint, body, true);
-    } else {
-      setClientAccessToken(null);
-      notifySetState(null);
+        return sendRequest(method, endPoint, body, true);
+      } catch (error) {
+        setClientAccessToken(null);
+        notifySetState(null);
 
-      await throwError(response);
+        console.error("REFRESH ERROR CLIENT API 114 ", error);
+        return;
+      }
     }
-  } else if (!response.ok) {
+
+    setClientAccessToken(null);
+    notifySetState(null);
+    console.error("SEND REQUEST ERROR CLIENT API 121", response);
     await throwError(response);
   }
 
