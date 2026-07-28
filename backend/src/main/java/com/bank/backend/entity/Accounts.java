@@ -19,6 +19,7 @@ public class Accounts {
     @Column(name = "account_name")
     private String accountName;
 
+    @Column(precision = 19, scale = 2)
     private BigDecimal balance;
 
     public int getAccountId() {

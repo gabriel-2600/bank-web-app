@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface AccountsRepoInterface extends JpaRepository<Accounts, Integer> {
+    Optional<Accounts> findByAccountId(int accountId);
     Optional<List<Accounts>> findByUserId(Long userId);
     Optional<Accounts> findByAccountIdAndUserId(int accountId, Long userId);
 }

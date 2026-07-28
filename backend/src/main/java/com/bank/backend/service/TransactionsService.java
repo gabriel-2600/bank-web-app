@@ -1,6 +1,7 @@
 package com.bank.backend.service;
 
 import com.bank.backend.dto.Transactions.request.DepositRequest;
+import com.bank.backend.dto.Transactions.request.TransferRequest;
 import com.bank.backend.dto.Transactions.request.WithdrawRequest;
 import com.bank.backend.dto.Transactions.response.GetTransactionResponse;
 import com.bank.backend.entity.Accounts;
@@ -20,22 +21,27 @@ import java.util.List;
 public class TransactionsService {
     private final TransactionsRepoInterface transactionsRepoInterface;
     private final AccountsRepoInterface accountsRepoInterface;
+    private final TransfersService transfersService;
 
     public TransactionsService(
             TransactionsRepoInterface transactionsRepoInterface,
-            AccountsRepoInterface accountsRepoInterface
+            AccountsRepoInterface accountsRepoInterface,
+            TransfersService transfersService
     ){
         this.transactionsRepoInterface = transactionsRepoInterface;
         this.accountsRepoInterface = accountsRepoInterface;
+        this.transfersService = transfersService;
     }
 
-    public void createTransaction(int accountId, BigDecimal amount, TransactionType transactionType){
+    public int createTransaction(int accountId, BigDecimal amount, TransactionType transactionType){
         Transactions transaction = new Transactions();
         transaction.setAccountId(accountId);
         transaction.setAmount(amount);
         transaction.setTransactionType(transactionType);
 
         transactionsRepoInterface.save(transaction);
+
+        return transaction.getTransactionId();
     }
 
     public List<GetTransactionResponse> getAllTransactions(int accountId, CustomUserDetails userDetails){
@@ -74,7 +80,7 @@ public class TransactionsService {
         }
 
         if (withdrawRequest.amount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidInputException("Zero Not Allowed");
+            throw new InvalidInputException("Invalid Amount");
         }
 
         if (account.getBalance().compareTo(withdrawRequest.amount()) < 0) {
@@ -93,19 +99,75 @@ public class TransactionsService {
 
         Accounts account = accountsRepoInterface
                 .findByAccountIdAndUserId(depositRequest.accountId(), userDetails.getUserId())
-                .orElseThrow(() -> new NotFoundException("Account not found."));
+                .orElseThrow(() -> new NotFoundException("Account not found"));
 
         if(depositRequest.amount() == null){
             throw new InvalidInputException("Invalid Input");
         }
 
         if (depositRequest.amount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidInputException("Zero Not Allowed");
+            throw new InvalidInputException("Invalid Amount");
         }
 
         account.setBalance(account.getBalance().add(depositRequest.amount()));
         accountsRepoInterface.save(account);
 
         createTransaction(depositRequest.accountId(), depositRequest.amount(), TransactionType.DEPOSIT);
+    }
+
+    @Transactional
+    public void transferTransaction(CustomUserDetails userDetails, TransferRequest transferRequest){
+        if (transferRequest.senderAmount() == null) {
+            throw new InvalidInputException("Invalid Input");
+        }
+
+        if (transferRequest.senderAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidInputException("Invalid Amount");
+        }
+
+        if (transferRequest.senderAccountId() == transferRequest.recipientAccountId()) {
+            throw new InvalidInputException("Same Account Not Allowed");
+        }
+
+        Accounts senderAccount = accountsRepoInterface
+                .findByAccountIdAndUserId(
+                    transferRequest.senderAccountId(),
+                    userDetails.getUserId())
+                .orElseThrow(() -> new NotFoundException("Account Not Found"));
+
+        Accounts recipientAccount = accountsRepoInterface
+                .findByAccountId(
+                        transferRequest.recipientAccountId())
+                .orElseThrow(() -> new NotFoundException("Account Not Found"));
+
+        if (senderAccount.getBalance().compareTo(transferRequest.senderAmount()) < 0) {
+            throw new InvalidInputException("Insufficient Funds");
+        }
+
+        senderAccount.setBalance(
+                senderAccount.getBalance()
+                        .subtract(transferRequest.senderAmount()));
+
+
+        recipientAccount.setBalance(
+                recipientAccount.getBalance()
+                        .add(transferRequest.senderAmount()));
+
+        accountsRepoInterface.save(senderAccount);
+        accountsRepoInterface.save(recipientAccount);
+
+        int senderTransactionId = createTransaction(
+                transferRequest.senderAccountId(),
+                transferRequest.senderAmount(),
+                TransactionType.TRANSFER_OUT
+                );
+
+        int recipientTransactionId = createTransaction(
+                recipientAccount.getAccountId(),
+                transferRequest.senderAmount(),
+                TransactionType.TRANSFER_IN
+        );
+
+        transfersService.createTransfer(senderTransactionId, recipientTransactionId);
     }
 }

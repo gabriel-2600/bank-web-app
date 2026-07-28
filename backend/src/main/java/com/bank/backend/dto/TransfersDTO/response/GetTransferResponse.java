@@ -1,4 +1,9 @@
 package com.bank.backend.dto.TransfersDTO.response;
 
-public record GetTransferResponse(int transferId, int transactionId, int recipientAccountId) {
-}
+import java.math.BigDecimal;
+
+public record GetTransferResponse(
+        int transferId,
+        int senderTransactionId,
+        int recipientTransactionId
+) {}

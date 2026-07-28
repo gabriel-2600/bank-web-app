@@ -10,11 +10,11 @@ public class Transfers {
     @Column(name = "transfer_id")
     private int transferId;
 
-    @Column(name = "transaction_id")
-    private int transactionId;
+    @Column(name = "sender_transaction_id")
+    private int senderTransactionId;
 
-    @Column(name = "recipient_account_id")
-    private int recipientAccountId;
+    @Column(name = "recipient_transaction_id")
+    private int recipientTransactionId;
 
     public int getTransferId() {
         return transferId;
@@ -24,19 +24,19 @@ public class Transfers {
         this.transferId = transferId;
     }
 
-    public int getTransactionId() {
-        return transactionId;
+    public int getSenderTransactionId() {
+        return senderTransactionId;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public void setSenderTransactionId(int senderTransactionId) {
+        this.senderTransactionId = senderTransactionId;
     }
 
-    public int getRecipientAccountId() {
-        return recipientAccountId;
+    public int getRecipientTransactionId() {
+        return recipientTransactionId;
     }
 
-    public void setRecipientAccountId(int recipientAccountId) {
-        this.recipientAccountId = recipientAccountId;
+    public void setRecipientTransactionId(int recipientTransactionId) {
+        this.recipientTransactionId = recipientTransactionId;
     }
 }

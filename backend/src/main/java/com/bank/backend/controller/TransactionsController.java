@@ -1,6 +1,7 @@
 package com.bank.backend.controller;
 
 import com.bank.backend.dto.Transactions.request.DepositRequest;
+import com.bank.backend.dto.Transactions.request.TransferRequest;
 import com.bank.backend.dto.Transactions.request.WithdrawRequest;
 import com.bank.backend.dto.Transactions.response.GetTransactionResponse;
 import com.bank.backend.security.CustomUserDetails;
@@ -29,10 +30,19 @@ public class TransactionsController {
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<?> depositAmount(
+    public ResponseEntity<?> depositMoney(
             @RequestBody DepositRequest depositRequest,
             @AuthenticationPrincipal CustomUserDetails userDetails){
         transactionsService.depositTransaction(depositRequest, userDetails);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/transfer")
+    public ResponseEntity<?> transferMoney(
+            @RequestBody TransferRequest transferRequest,
+            @AuthenticationPrincipal CustomUserDetails userDetails){
+        transactionsService.transferTransaction(userDetails, transferRequest);
 
         return ResponseEntity.noContent().build();
     }
@@ -47,4 +57,6 @@ public class TransactionsController {
 
         return ResponseEntity.ok(allTransactions);
     }
+
+
 }

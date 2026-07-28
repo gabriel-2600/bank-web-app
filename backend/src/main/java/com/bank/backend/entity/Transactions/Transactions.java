@@ -14,6 +14,7 @@ public class Transactions {
     @Column(name = "account_id")
     private int accountId;
 
+    @Column(precision = 19, scale = 2)
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
