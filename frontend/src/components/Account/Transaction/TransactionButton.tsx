@@ -1,5 +1,5 @@
 import { useState, type Dispatch } from "react";
-// import Transfer from "./Transfer";
+import Transfer from "./Transfer";
 import Withdraw from "./Withdraw";
 import Deposit from "./Deposit";
 import type { AccountInterface } from "../../../types/AccountInterface";
@@ -85,14 +85,9 @@ function TransactionButton({ account, setAccount }: TransactionButtonProps) {
           {isWithdrawClicked && (
             <Withdraw account={account} setAccount={setAccount} />
           )}
-          {/* {isTransferClicked && (
-            <Transfer
-              accountId={accountId}
-              account={account}
-              accounts={accounts}
-              setAccounts={setAccounts}
-            />
-          )} */}
+          {isTransferClicked && (
+            <Transfer account={account} setAccount={setAccount} />
+          )}
         </div>
       )}
     </div>

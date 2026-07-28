@@ -2,12 +2,11 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 
 import type { AccountInterface } from "../../../types/AccountInterface";
 import { errorToast, successfulToast } from "../../../util/toast-notifcation";
+import type { Dispatch } from "react";
 
 type TransferProps = {
-  accountId: string;
   account: AccountInterface;
-  accounts: AccountInterface[];
-  setAccounts: React.Dispatch<React.SetStateAction<AccountInterface[]>>;
+  setAccount: Dispatch<AccountInterface>;
 };
 
 interface TransferFormInterface {
@@ -18,47 +17,14 @@ interface TransferFormInterface {
 const inputClass =
   "w-full rounded-xl border border-black/15 bg-white px-3.5 py-2.5 text-sm text-black outline-none transition-colors placeholder:text-black/40 focus:border-[#8494FF]";
 
-function Transfer({
-  accountId,
-  account,
-  accounts,
-  setAccounts,
-}: TransferProps) {
+function Transfer({ account, setAccount }: TransferProps) {
   const { register, watch, handleSubmit, reset } =
     useForm<TransferFormInterface>();
   const amountValue = watch("amount");
   const hasAmount = Number.isFinite(amountValue);
   const isBalanceSufficient = amountValue <= account.balance;
 
-  const onSubmit: SubmitHandler<TransferFormInterface> = ({
-    toAccountID,
-    amount,
-  }) => {
-    const recipientAccount = accounts.find(
-      (acc) => acc.accountID === toAccountID,
-    );
-    if (!recipientAccount?.accountID) {
-      errorToast("Account Not Found");
-      return;
-    }
-
-    if (accountId === recipientAccount.accountID) {
-      reset();
-      return;
-    }
-
-    setAccounts((prevAccounts) =>
-      prevAccounts.map((acc) => {
-        if (acc.accountID === accountId) {
-          return { ...acc, balance: acc.balance - amount };
-        }
-        if (acc.accountID === recipientAccount.accountID) {
-          return { ...acc, balance: acc.balance + amount };
-        }
-        return acc;
-      }),
-    );
-
+  const onSubmit: SubmitHandler<TransferFormInterface> = (data) => {
     reset();
     successfulToast("Transfer Successful");
   };
