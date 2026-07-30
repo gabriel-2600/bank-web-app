@@ -42,9 +42,9 @@ public class TransactionsController {
     public ResponseEntity<?> transferMoney(
             @RequestBody TransferRequest transferRequest,
             @AuthenticationPrincipal CustomUserDetails userDetails){
-        transactionsService.transferTransaction(userDetails, transferRequest);
+        int recipientAccountId = transactionsService.transferTransaction(userDetails, transferRequest);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(recipientAccountId);
     }
 
     @GetMapping("/get/all/{accountId}")
@@ -57,6 +57,4 @@ public class TransactionsController {
 
         return ResponseEntity.ok(allTransactions);
     }
-
-
 }

@@ -116,7 +116,7 @@ public class TransactionsService {
     }
 
     @Transactional
-    public void transferTransaction(CustomUserDetails userDetails, TransferRequest transferRequest){
+    public int transferTransaction(CustomUserDetails userDetails, TransferRequest transferRequest){
         if (transferRequest.senderAmount() == null) {
             throw new InvalidInputException("Invalid Input");
         }
@@ -169,5 +169,7 @@ public class TransactionsService {
         );
 
         transfersService.createTransfer(senderTransactionId, recipientTransactionId);
+
+        return recipientAccount.getAccountId();
     }
 }
