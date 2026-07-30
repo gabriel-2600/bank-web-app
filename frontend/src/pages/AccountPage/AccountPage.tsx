@@ -28,6 +28,10 @@ function AccountPage() {
       }
     }
 
+    getSingleAccount();
+  }, [accountId]);
+
+  useEffect(() => {
     async function getTransactionHistory() {
       try {
         const transactionHistory = await transactionHistoryApi(
@@ -44,9 +48,8 @@ function AccountPage() {
       }
     }
 
-    getSingleAccount();
     getTransactionHistory();
-  }, [accountId]);
+  }, [account?.balance]);
 
   if (!account) {
     return <p>Loading...</p>;
