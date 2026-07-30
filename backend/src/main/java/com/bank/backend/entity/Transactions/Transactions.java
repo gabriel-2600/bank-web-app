@@ -18,7 +18,7 @@ public class Transactions {
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_type", columnDefinition = "ENUM('DEPOSIT', 'WITHDRAW', 'TRANSFER')")
+    @Column(name = "transaction_type")
     private TransactionType transactionType;
 
     public int getTransactionId() {

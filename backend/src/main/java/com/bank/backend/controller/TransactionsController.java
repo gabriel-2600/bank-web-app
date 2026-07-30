@@ -52,6 +52,8 @@ public class TransactionsController {
             @PathVariable int accountId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
+        System.out.println("CONTROLLER REACHED----------------------------");
+
         List<GetTransactionResponse> allTransactions =
                 transactionsService.getAllTransactions(accountId, userDetails);
 
