@@ -39,6 +39,7 @@ function Deposit({ account, setAccount }: DepositProps) {
       successfulToast("Deposit Successful");
 
       const refreshAccount = await getBankAccountApi(account.accountId);
+
       setAccount(refreshAccount);
     } catch (error) {
       errorToast(error instanceof Error ? error.message : "Deposit Failed");

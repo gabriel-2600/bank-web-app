@@ -80,6 +80,9 @@ export const sendRequest = async (
 ) => {
   let response;
 
+  console.log("ACCESS_TOKEN:", ACCESS_TOKEN);
+  console.log("ENDPOINT:", endPoint);
+
   if (body === undefined) {
     response = await fetch(`${BASE_URL}/api${endPoint}`, {
       mode: "cors",
@@ -117,9 +120,9 @@ export const sendRequest = async (
       }
     }
 
-    setClientAccessToken(null);
-    notifySetState(null);
-    console.log("responses ", response);
+    // setClientAccessToken(null);
+    // notifySetState(null);
+    console.log("RETRIED PERFORMED ", response);
     await throwBackendError(response);
   }
 

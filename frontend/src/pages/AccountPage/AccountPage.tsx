@@ -4,15 +4,22 @@ import { useEffect, useState } from "react";
 import { getBankAccountApi } from "../../api/Account/accountApi";
 import TransactionButton from "../../components/Account/Transaction/TransactionButton";
 import { errorToast } from "../../util/toast-notifcation";
+import { transactionHistoryApi } from "../../api/Transaction/transactionApi";
+import TransactionHistory from "../../components/Account/Transaction/TransactionHistory";
+import type { TransactionHistoryInteface } from "../../types/TransactionHistoryInteface";
 
 function AccountPage() {
   const { accountId } = useParams<{ accountId: string }>();
   const [account, setAccount] = useState<AccountInterface | null>(null);
+  const [transactionHistory, setTransactionHistory] = useState<
+    TransactionHistoryInteface[]
+  >([]);
 
   useEffect(() => {
     async function getSingleAccount() {
       try {
         const singleAccount = await getBankAccountApi(Number(accountId));
+
         setAccount(singleAccount);
       } catch (error) {
         errorToast(
@@ -21,7 +28,24 @@ function AccountPage() {
       }
     }
 
+    async function getTransactionHistory() {
+      try {
+        const transactionHistory = await transactionHistoryApi(
+          Number(accountId),
+        );
+
+        setTransactionHistory(transactionHistory);
+      } catch (error) {
+        errorToast(
+          error instanceof Error
+            ? error.message
+            : "Transaction History Retrieval Failed",
+        );
+      }
+    }
+
     getSingleAccount();
+    getTransactionHistory();
   }, [accountId]);
 
   if (!account) {
@@ -60,6 +84,8 @@ function AccountPage() {
           <TransactionButton account={account} setAccount={setAccount} />
         </div>
       </section>
+
+      <TransactionHistory transactionHistory={transactionHistory} />
     </main>
   );
 }

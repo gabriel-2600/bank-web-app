@@ -33,3 +33,11 @@ export const transferApi = async (transferData: transferData) => {
 
   console.log("transferApi - TRANSFER API LINE 33 ", data);
 };
+
+export const transactionHistoryApi = async (accountId: number) => {
+  const data = await sendRequest("GET", `/transaction/get/all/${accountId}`);
+
+  console.log("transactionHistoryApi - GET TRANSACTION HISTORY LINE 41 ", data);
+
+  return data;
+};
