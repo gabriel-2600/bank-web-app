@@ -1,4 +1,4 @@
-import { throwError } from "../../util/throw-error";
+import { throwBackendError } from "../../util/throw-backend-error";
 
 interface RegistrationInterface {
   fullName: string;
@@ -20,7 +20,7 @@ export const registerApi = async (registrationData: RegistrationInterface) => {
   });
 
   if (!response.ok) {
-    await throwError(response);
+    await throwBackendError(response);
   }
 
   return true;

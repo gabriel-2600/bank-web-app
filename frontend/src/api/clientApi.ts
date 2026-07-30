@@ -1,4 +1,5 @@
-import { throwError } from "../util/throw-error";
+import { throwBackendError } from "../util/throw-backend-error";
+import { errorToast } from "../util/toast-notifcation";
 
 type HttpMethods = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 type BodyType = object | undefined;
@@ -111,15 +112,19 @@ export const sendRequest = async (
         setClientAccessToken(null);
         notifySetState(null);
 
-        console.error("REFRESH ERROR CLIENT API 114 ", error);
+        errorToast(error instanceof Error ? error.message : "Unauthenticated");
         return;
       }
     }
 
     setClientAccessToken(null);
     notifySetState(null);
-    console.error("SEND REQUEST ERROR CLIENT API 121", response);
-    await throwError(response);
+    console.log("responses ", response);
+    await throwBackendError(response);
+  }
+
+  if (!response.ok) {
+    await throwBackendError(response);
   }
 
   if (response.status === 204) {
@@ -128,7 +133,6 @@ export const sendRequest = async (
   }
 
   const data = await response.json();
-  console.log("sendRequest - CLIENT API LINE 125 ", data);
 
   return data;
 };

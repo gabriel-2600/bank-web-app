@@ -10,6 +10,12 @@ interface withdrawData {
   amount: number;
 }
 
+interface transferData {
+  senderAmount: number;
+  senderAccountId: number;
+  recipientAccountId: number;
+}
+
 export const depositApi = async (depositData: DepositData) => {
   const data = await sendRequest("POST", "/transaction/deposit", depositData);
 
@@ -20,4 +26,10 @@ export const withdrawApi = async (withdrawData: withdrawData) => {
   const data = await sendRequest("POST", "/transaction/withdraw", withdrawData);
 
   console.log("withdrawApi - WITHDRAW API LINE 17 ", data);
+};
+
+export const transferApi = async (transferData: transferData) => {
+  const data = await sendRequest("POST", "/transaction/transfer", transferData);
+
+  console.log("transferApi - TRANSFER API LINE 33 ", data);
 };

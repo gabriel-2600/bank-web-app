@@ -1,8 +1,9 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-
 import type { AccountInterface } from "../../../types/AccountInterface";
 import { errorToast, successfulToast } from "../../../util/toast-notifcation";
 import type { Dispatch } from "react";
+import { transferApi } from "../../../api/Transaction/transactionApi";
+import { getBankAccountApi } from "../../../api/Account/accountApi";
 
 type TransferProps = {
   account: AccountInterface;
@@ -10,7 +11,7 @@ type TransferProps = {
 };
 
 interface TransferFormInterface {
-  toAccountID: string;
+  toAccountId: number;
   amount: number;
 }
 
@@ -24,9 +25,39 @@ function Transfer({ account, setAccount }: TransferProps) {
   const hasAmount = Number.isFinite(amountValue);
   const isBalanceSufficient = amountValue <= account.balance;
 
-  const onSubmit: SubmitHandler<TransferFormInterface> = (data) => {
-    reset();
-    successfulToast("Transfer Successful");
+  const onSubmit: SubmitHandler<TransferFormInterface> = async (data) => {
+    if (account.accountId === data.toAccountId) {
+      errorToast("Cannot Transfer to Same Account");
+      return;
+    }
+
+    if (account.balance < data.amount) {
+      errorToast("Insufficient Balance");
+      return;
+    }
+
+    if (!data.toAccountId || !data.amount) {
+      errorToast("Invalid Input");
+      return;
+    }
+
+    const transferData = {
+      senderAmount: data.amount,
+      senderAccountId: account.accountId,
+      recipientAccountId: data.toAccountId,
+    };
+
+    try {
+      await transferApi(transferData);
+
+      reset();
+      successfulToast("Deposit Successful");
+
+      const refreshAccount = await getBankAccountApi(account.accountId);
+      setAccount(refreshAccount);
+    } catch (error) {
+      errorToast(error instanceof Error ? error.message : "Transfer Failed");
+    }
   };
 
   return (
@@ -47,10 +78,13 @@ function Transfer({ account, setAccount }: TransferProps) {
           </label>
           <input
             id="transfer-to-account-id"
-            type="text"
+            type="number"
             className={inputClass}
             placeholder="Recipient account ID"
-            {...register("toAccountID", { required: true })}
+            {...register("toAccountId", {
+              required: true,
+              valueAsNumber: true,
+            })}
           />
         </div>
 

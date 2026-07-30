@@ -1,4 +1,4 @@
-import { throwError } from "../../util/throw-error";
+import { throwBackendError } from "../../util/throw-backend-error";
 
 export const logoutApi = async () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -10,6 +10,6 @@ export const logoutApi = async () => {
   });
 
   if (!response.ok) {
-    await throwError(response);
+    await throwBackendError(response);
   }
 };

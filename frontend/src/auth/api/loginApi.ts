@@ -1,4 +1,4 @@
-import { throwError } from "../../util/throw-error";
+import { throwBackendError } from "../../util/throw-backend-error";
 import { type LoginResponse } from "../authTypes";
 
 interface LoginInterface {
@@ -20,11 +20,10 @@ export const loginApi = async (loginData: LoginInterface) => {
   });
 
   if (!response.ok) {
-    await throwError(response);
+    await throwBackendError(response);
   }
 
   const data: LoginResponse = await response.json();
-  console.log(data);
 
   return data;
 };

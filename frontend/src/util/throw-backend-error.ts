@@ -1,4 +1,4 @@
-export const throwError = async (response: Response) => {
+export const throwBackendError = async (response: Response) => {
   let errorMessage = "Client Error, please try again later";
 
   try {
@@ -6,7 +6,7 @@ export const throwError = async (response: Response) => {
     errorMessage = errorData.message || errorMessage;
   } catch (err) {
     //
-    console.error("THROW ERROR 9 ", err);
+    console.error("Client Error ", err);
   }
 
   throw new Error(errorMessage);
