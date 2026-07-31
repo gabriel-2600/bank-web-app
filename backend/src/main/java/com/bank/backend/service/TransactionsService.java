@@ -45,7 +45,7 @@ public class TransactionsService {
     }
 
     public List<GetTransactionResponse> getAllTransactions(int accountId, CustomUserDetails userDetails){
-        Accounts account = accountsRepoInterface.findByAccountIdAndUserId(accountId, userDetails.getUserId()).orElseThrow(() -> new NotFoundException("Not Found"));
+        Accounts account = accountsRepoInterface.findByAccountIdAndUserId(accountId, userDetails.getUserId()).orElseThrow(() -> new NotFoundException("Transaction Not Found"));
         List<Transactions> transactions = transactionsRepoInterface.findAllByAccountId(account.getAccountId());
 
         return transactions.stream()
