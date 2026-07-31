@@ -1,5 +1,7 @@
+import { logoutApi } from "../auth/api/logoutApi";
 import { throwBackendError } from "../util/throw-backend-error";
 import { errorToast } from "../util/toast-notifcation";
+import { redirect } from "react-router";
 
 type HttpMethods = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 type BodyType = object | undefined;
@@ -80,29 +82,30 @@ export const sendRequest = async (
 ) => {
   let response;
 
-  console.log("ACCESS_TOKEN:", ACCESS_TOKEN);
-  console.log("ENDPOINT:", endPoint);
-
-  if (body === undefined) {
-    response = await fetch(`${BASE_URL}/api${endPoint}`, {
-      mode: "cors",
-      method: `${method}`,
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
-      credentials: "include",
-    });
-  } else {
-    response = await fetch(`${BASE_URL}/api${endPoint}`, {
-      mode: "cors",
-      method: `${method}`,
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-      credentials: "include",
-    });
+  try {
+    if (body === undefined) {
+      response = await fetch(`${BASE_URL}/api${endPoint}`, {
+        mode: "cors",
+        method: `${method}`,
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+        credentials: "include",
+      });
+    } else {
+      response = await fetch(`${BASE_URL}/api${endPoint}`, {
+        mode: "cors",
+        method: `${method}`,
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+        credentials: "include",
+      });
+    }
+  } catch {
+    throw new Error("Server Down");
   }
 
   if (response.status === 401) {
@@ -114,16 +117,19 @@ export const sendRequest = async (
       } catch (error) {
         setClientAccessToken(null);
         notifySetState(null);
-
+        logoutApi();
         errorToast(error instanceof Error ? error.message : "Unauthenticated");
-        return;
+
+        return redirect("/login");
       }
     }
 
-    // setClientAccessToken(null);
-    // notifySetState(null);
-    console.log("RETRIED PERFORMED ", response);
-    await throwBackendError(response);
+    setClientAccessToken(null);
+    notifySetState(null);
+    logoutApi();
+    errorToast("Unauthenticated");
+
+    return redirect("/login");
   }
 
   if (!response.ok) {
@@ -131,7 +137,6 @@ export const sendRequest = async (
   }
 
   if (response.status === 204) {
-    console.log("sendRequest - SUCCESS 204 NO CONTENT");
     return;
   }
 

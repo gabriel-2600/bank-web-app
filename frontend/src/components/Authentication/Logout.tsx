@@ -7,9 +7,10 @@ function Logout() {
   const navigate = useNavigate();
 
   const performLogout = async () => {
-    await logoutApi();
     logout();
     navigate("/login", { replace: true });
+
+    await logoutApi();
   };
   return (
     <button

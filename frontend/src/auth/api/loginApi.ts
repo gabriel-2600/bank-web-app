@@ -8,16 +8,20 @@ interface LoginInterface {
 
 export const loginApi = async (loginData: LoginInterface) => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-  const response = await fetch(`${BASE_URL}/api/auth/login`, {
-    mode: "cors",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(loginData),
-  });
+  let response;
+  try {
+    response = await fetch(`${BASE_URL}/api/auth/login`, {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(loginData),
+    });
+  } catch {
+    throw new Error("Server Down, please try again later");
+  }
 
   if (!response.ok) {
     await throwBackendError(response);
