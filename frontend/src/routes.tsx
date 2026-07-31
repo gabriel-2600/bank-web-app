@@ -7,7 +7,6 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
 import LandingErrorPage from "./pages/ErrorPages/LandingErrorPage";
-import AccountPageError from "./pages/ErrorPages/AccountPageError";
 import { protectedLoader } from "./auth/protected-loaders";
 import { publicLoader } from "./auth/public-loaders";
 
@@ -45,7 +44,6 @@ const routes = [
       {
         path: "account/:accountId",
         element: <AccountPage />,
-        errorElement: <AccountPageError />,
       },
       { path: "*", element: <ErrorPage /> },
     ],

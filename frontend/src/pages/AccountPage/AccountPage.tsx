@@ -48,11 +48,25 @@ function AccountPage() {
       }
     }
 
-    getTransactionHistory();
+    if (account) {
+      getTransactionHistory();
+    }
   }, [account?.balance]);
 
   if (!account) {
-    return <p>Loading...</p>;
+    return (
+      <main className="mx-auto flex min-h-[60vh] w-full max-w-6xl items-center justify-center px-4 py-8 sm:px-6 sm:py-10">
+        <section className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-8 text-center shadow-sm">
+          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-black">
+            Account Not Found
+          </h1>
+
+          <p className="mt-3 text-sm text-black/60">
+            The account you're looking for doesn't exist
+          </p>
+        </section>
+      </main>
+    );
   }
 
   return (
