@@ -18,13 +18,13 @@ public class AccountsService {
         this.accountsRepoInterface = accountsRepoInterface;
     }
 
-    public void createOrUpdateAccount(CustomUserDetails userDetails, CreateAccountRequest createAccountRequest) {
+    public Accounts createAccount(CustomUserDetails userDetails, CreateAccountRequest createAccountRequest) {
         Accounts account = new Accounts();
         account.setUserId(userDetails.getUserId());
         account.setAccountName(createAccountRequest.accountName().trim());
         account.setBalance(createAccountRequest.balance());
 
-        accountsRepoInterface.save(account);
+        return accountsRepoInterface.save(account);
     }
 
     public List<GetAccountResponse> getAllAccounts(Long userId) {
