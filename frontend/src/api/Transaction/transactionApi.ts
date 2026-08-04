@@ -18,26 +18,21 @@ interface transferData {
 
 export const depositApi = async (depositData: DepositData) => {
   const data = await sendRequest("POST", "/transaction/deposit", depositData);
-
-  console.log("depositApi - DEPOSIT API LINE 11 ", data);
+  return data;
 };
 
 export const withdrawApi = async (withdrawData: withdrawData) => {
   const data = await sendRequest("POST", "/transaction/withdraw", withdrawData);
-
-  console.log("withdrawApi - WITHDRAW API LINE 17 ", data);
+  return data;
 };
 
 export const transferApi = async (transferData: transferData) => {
   const data = await sendRequest("POST", "/transaction/transfer", transferData);
-
-  console.log("transferApi - TRANSFER API LINE 33 ", data);
+  return data;
 };
 
 export const transactionHistoryApi = async (accountId: number) => {
   const data = await sendRequest("GET", `/transaction/get/all/${accountId}`);
-
-  console.log("transactionHistoryApi - GET TRANSACTION HISTORY LINE 41 ", data);
 
   return data;
 };

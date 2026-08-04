@@ -63,7 +63,6 @@ function notifySetState(update: string | null) {
 
 export const setClientAccessToken = (token: string | null) => {
   ACCESS_TOKEN = token;
-  console.log("ACCESS TOKEN IS SET IN clientApi.ts LINE 63: " + ACCESS_TOKEN);
 };
 
 export const getClientAccessToken = () => ACCESS_TOKEN;

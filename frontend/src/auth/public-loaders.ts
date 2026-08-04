@@ -20,7 +20,6 @@ export const publicLoader = async () => {
   try {
     const newToken = await refreshApi();
     if (newToken) {
-      console.log("REDIRECT IN APP");
       return redirect("/app");
     }
   } catch (error) {
