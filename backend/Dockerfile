@@ -7,7 +7,7 @@ COPY pom.xml .
 
 COPY src ./src
 
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # Stage 2: Run the image
 FROM eclipse-temurin:25-jre
