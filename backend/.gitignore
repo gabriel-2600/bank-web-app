@@ -33,6 +33,10 @@ build/
 ### VS Code ###
 .vscode/
 
+# --- System and OS Files ---
+.DS_Store
+Thumbs.db
+
 app.env
 *.env
 .env

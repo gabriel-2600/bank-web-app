@@ -1,0 +1,39 @@
+# --- Build Output and Binaries ---
+**/target/
+**/build/
+**/out/
+.gradle/
+
+# --- IDE and Local Configuration ---
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+.classpath
+.project
+.factorypath
+
+# --- Version Control and Logs ---
+.git
+.gitignore
+*.log
+logs/
+
+# --- CI/CD and Containerization Files ---
+Dockerfile
+.dockerignore
+docker-compose*.yml
+.github/
+.gitlab-ci.yml
+
+# --- System and OS Files ---
+.DS_Store
+Thumbs.db
+
+# =========================================
+# Environment and config files (sensitive)
+# =========================================
+app.env
+*.env*
+.env
