@@ -1,0 +1,49 @@
+services:
+  mysql:
+    image: mysql:9.6.0
+    container_name: bank-db
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bank_app
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: bank-backend
+
+    env_file:
+      - ./backend/docker.env
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+
+    container_name: bank-frontend
+
+    env_file:
+      - ./frontend/.env
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
+
+volumes:
+  mysql-data:

@@ -1,39 +1,44 @@
 # --- Build Output and Binaries ---
+
 **/target/
 **/build/
-**/out/
+\*\*/out/
 .gradle/
 
 # --- IDE and Local Configuration ---
+
 .idea/
-*.iml
-*.ipr
-*.iws
+_.iml
+_.ipr
+\*.iws
 .settings/
 .classpath
 .project
 .factorypath
 
 # --- Version Control and Logs ---
+
 .git
 .gitignore
-*.log
+\*.log
 logs/
 
 # --- CI/CD and Containerization Files ---
+
 Dockerfile
 .dockerignore
-docker-compose*.yml
+docker-compose\*.yml
+compose.yaml
 .github/
 .gitlab-ci.yml
 
 # --- System and OS Files ---
+
 .DS_Store
 Thumbs.db
 
-# =========================================
-# Environment and config files (sensitive)
-# =========================================
+# env
+
 app.env
-*.env*
+_.env_
 .env

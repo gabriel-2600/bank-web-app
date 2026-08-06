@@ -58,6 +58,7 @@ Dockerfile
 .dockerignore
 docker-compose.yml
 docker-compose.override.yml
+compose.yaml
  
 # =========================================
 # AI / LLM-related files
