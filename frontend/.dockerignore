@@ -25,7 +25,6 @@ reports/
 # Environment and config files (sensitive)
 # =========================================
 *.env*
-!.env.production  # Allow production env file if needed
 *.log
  
 # =========================================
