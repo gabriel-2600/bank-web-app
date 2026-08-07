@@ -14,6 +14,10 @@
 - Separation of Concerns design pattern was implemented overall in the project. MVC Architecture was used to separate each component.
 - What improved into me was breaking the problems into smaller, digestible pieces. So I can make a solution for each piece, then gradually solve the problem overall.
 
+## AI assisted programming
+
+- AI is already here, and the best thing we can do as developers is to adapt. I treated AI as a partner to help me learn faster and helped me understand concepts deeper. But for me, the essence of software engineering is to solve problems, so we developers need to keep or enhance our problem solving and decision making skills without heavily relying to AI.
+
 ## Tech Stack
 
 ### Frontend
