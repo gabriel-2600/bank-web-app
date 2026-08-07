@@ -1,73 +1,43 @@
-# React + TypeScript + Vite
+# Software Engineering Fundamentals
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- This project is a simple Bank Web Application solely created to solidify Web Development and Software Engineering concepts
 
-Currently, two official plugins are available:
+## Web Development Fundamentals
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Solidified my understanding on how a website works.
+  - A website works through a client-server model, where the client components communicate through the server via API. The server processes the request from the client then retrieves or persist the data in a database, then send the response back to the client.
+- User friendy UI/UX designs that are simple yet effective that provide straight forward information to the user.
 
-## React Compiler
+## Software Engineering Fundamentals
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Understood the importance of SOLID Principles, especially Single Responsibility, and Dependency Injection. I used them a lot in the whole project to enforce code modularity, making the code easier to read, navigate, change or update, and test in isolation.
+- Separation of Concerns design pattern was implemented overall in the project. MVC Architecture was used to separate each component.
+- What improved into me was breaking the problems into smaller, digestible pieces. So I can make a solution for each piece, then gradually solve the problem overall.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Frontend
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- React, TypeScript, Tailwind CSS, Vite
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Backend
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Spring Boot
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Database
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- MySQL
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Testing
+
+- Postman, Mockito, JUnit
+
+### Other Tools
+
+- Docker
+- VS Code, IntelliJ IDEA, Cursor
+- Github
+
+### AI Tools (All Free Tier)
+
+- Chat GPT, Google Gemini, Cursor free AI
