@@ -46,6 +46,7 @@
 
 ### Frontend
 
+```
 .
 ├── AGENTS.md
 ├── Dockerfile.dev
@@ -68,9 +69,11 @@
 ├── tsconfig.json
 ├── tsconfig.node.json
 └── vite.config.ts
+```
 
 ### Backend
 
+```
 ├── Dockerfile
 ├── HELP.md
 ├── mvnw
@@ -83,9 +86,10 @@
 ├── classes
 ├── generated-sources
 └── test-classes
+```
 
 ### Database ERD
 
 <p align="center">
-  <img src="database/ERD.png" alt="ERD" width="800">
+  <img src="database/ERD.png" alt="ERD" width="400">
 </p>
