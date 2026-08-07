@@ -41,3 +41,51 @@
 ### AI Tools (All Free Tier)
 
 - Chat GPT, Google Gemini, Cursor free AI
+
+## Project Structure
+
+### Frontend
+
+.
+├── AGENTS.md
+├── Dockerfile.dev
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── src
+│   ├── api
+│   ├── App.tsx
+│   ├── auth
+│   ├── components
+│   ├── global.css
+│   ├── main.tsx
+│   ├── pages
+│   ├── routes.tsx
+│   ├── types
+│   └── util
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+
+### Backend
+
+├── Dockerfile
+├── HELP.md
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── src
+│   ├── main
+│   └── test
+└── target
+├── classes
+├── generated-sources
+└── test-classes
+
+### Database ERD
+
+<p align="center">
+  <img src="database/ERD.png" alt="ERD" width="800">
+</p>
